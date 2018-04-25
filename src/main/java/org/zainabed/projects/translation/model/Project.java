@@ -27,8 +27,6 @@ public class Project extends BaseModel {
 	@Column(length = 200, nullable = false)
 	private String description;
 
-	@Column(length = 300, nullable = true)
-	@Max(300)
 	private String imageUri;
 	
 	@ManyToMany
