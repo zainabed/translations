@@ -2,8 +2,10 @@ package org.zainabed.projects.translation.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,7 +24,10 @@ public class Locale extends BaseModel {
 	@Size(min = 5, max = 6)
 	@Column(length = 6, nullable = false)
 	private String code;
-	
+
+	@ManyToOne(fetch=FetchType.EAGER)
+	private Project project;
+
 	private Boolean defualt;
 
 	public String getName() {
@@ -49,4 +54,13 @@ public class Locale extends BaseModel {
 		this.defualt = defualt;
 	}
 
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	
 }

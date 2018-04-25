@@ -1,8 +1,11 @@
 package org.zainabed.projects.translation.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -14,6 +17,9 @@ public class User extends BaseModel {
 	private String email;
 	private String password;
 	private String status;
+	
+	@ManyToMany
+	private List<Project> projects;
 
 	public String getUsername() {
 		return username;
@@ -46,5 +52,15 @@ public class User extends BaseModel {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+	
+	
 
 }
