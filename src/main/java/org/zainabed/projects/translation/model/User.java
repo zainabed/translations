@@ -7,17 +7,27 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="translation_user")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@Table(name = "translation_user")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User extends BaseModel {
 
+	@NotNull
+	@Size(min = 5, max = 20)
 	private String username;
+
+	@Email
+	@Size(min = 5, max = 30)
 	private String email;
+
+	@NotNull
 	private String password;
 	private String status;
-	
+
 	@ManyToMany
 	private List<Project> projects;
 
@@ -60,7 +70,5 @@ public class User extends BaseModel {
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
 	}
-	
-	
 
 }
