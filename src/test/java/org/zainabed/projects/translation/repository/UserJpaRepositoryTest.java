@@ -72,6 +72,6 @@ public class UserJpaRepositoryTest {
 	public void shouldReturnSingleUserObject() throws Exception{
 		mvc.perform(get("/users"))
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$", hasSize(1)));
+		.andExpect(jsonPath("$._embedded.users", hasSize(1)));
 	}
 }
