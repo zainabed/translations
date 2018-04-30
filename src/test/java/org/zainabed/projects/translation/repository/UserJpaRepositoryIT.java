@@ -80,6 +80,50 @@ public class UserJpaRepositoryIT {
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
+	@Test
+	public void shouldReturn400StatusCauseUsernameLengthIsMoreThen20() throws Exception {
+		mvc.perform(post("/users")
+				.content(
+						"{ \"username\":\"123456789012345678901\", \"email\":\"test@test.org\", \"password\":\"abcdef\" }")
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void shouldReturn400StatusCodeForInvalidEmail() throws Exception {
+		mvc.perform(
+				post("/users").content("{\"username\":\"testuser\", \"email\":\"abvdceef\", \"password\":\"abcded\"}")
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void shouldReturn400StatusCodeForEmptyEmail() throws Exception {
+		mvc.perform(post("/users").content("{ \"username\":null, \"email\":\"test@test.org\", \"password\":\"abcde\" }")
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void shouldReturn400StatusCauseEmailLengthIsLessThen5() throws Exception {
+		mvc.perform(post("/users").content("{ \"username\":\"abcde\", \"email\":\"test\", \"password\":\"abcdef\" }")
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void shouldReturn400StatusCauseEamilLengthIsMoreThen30() throws Exception {
+		mvc.perform(post("/users")
+				.content(
+						"{ \"username\":\"abcde\", \"email\":\"123456@789012345678901234567.8901\", \"password\":\"abcdef\" }")
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void shouldReturn400StatusCodeForEmptyPassword() throws Exception {
+		mvc.perform(
+				post("/users").content("{ \"username\":\"abcsss\", \"email\":\"test@test.org\", \"password\":null }")
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is4xxClientError());
+	}
+
 	// End of Unit test for User constraint violations
 
 	@Test
