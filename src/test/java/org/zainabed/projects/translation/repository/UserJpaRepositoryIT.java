@@ -42,9 +42,6 @@ public class UserJpaRepositoryIT {
 	@Autowired
 	private WebApplicationContext context;
 
-	String testUsername = "testuser";
-	List<User> users;
-
 	@Rule
 	public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
 
@@ -52,20 +49,13 @@ public class UserJpaRepositoryIT {
 	public void loadModel() {
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context)
 				.apply(documentationConfiguration(this.restDocumentation)).build();
-		users = new ArrayList<User>();
-		for (int i = 1; i < 5; i++) {
-			User user = new User();
-			user.setUsername("username " + i);
-			users.add(user);
-		}
+
 	}
 
 	@After
 	public void releaseModel() {
-		users = null;
-	}
 
-	// Unit test for User POST method
+	}
 
 	@Test
 	public void shouldPostSingleEntity() throws Exception {
