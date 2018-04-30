@@ -69,17 +69,32 @@ public class UserJpaRepositoryTest {
 		users = null;
 	}
 
+	// Unit test for User POST method
+
 	@Test
 	public void shouldPostSingleEntity() throws Exception {
-		User user = new User();
-		user.setUsername(testUsername);
-		user.setEmail("test@test.com");
-		user.setPassword("12345");
 
 		mvc.perform(post("/users")
 				.content("{ \"username\": \"zainabed\", \"email\":\"test@test.org\",\"password\":\"abcde\"}")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andDo(document("users"));
 	}
+
+	// Unit test for User constraint violations
+
+	@Test
+	public void shouldReturn400StatusCodeForInvalidUsername() throws Exception {
+		mvc.perform(post("/users").content("{ \"username\":null, \"email\":\"test@test.org\", \"password\":\"abcde\" }")
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void shouldReturn400StatusCauseUsernameLengthIsLessThen5() throws Exception {
+		mvc.perform(post("/users")
+				.content("{ \"username\":\"abcd\", \"email\":\"test@test.org\", \"password\":\"abcdef\" }")
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+	}
+
+	// End of Unit test for User constraint violations
 
 	@Test
 	public void shouldReturnSingleUserObject() throws Exception {
@@ -89,19 +104,26 @@ public class UserJpaRepositoryTest {
 								linkWithRel("profile").description("Link to user profile"),
 								linkWithRel("search").description("Link for search method for user resource")),
 						responseFields(
-								/*fieldWithPath("users.username").description("Unique username of user"),
-								fieldWithPath("users.emaill").description("Email address of user"),
-								fieldWithPath("users.password").description("Password of user"),
-								fieldWithPath("users.created_at").description("Date of creation"),
-								fieldWithPath("users.updated_at").description("Last date of update"),
-								fieldWithPath("users.status")
-										.description("Status of user {active, deactive or blocked}")*/
+								/*
+								 * fieldWithPath("users.username").description(
+								 * "Unique username of user"),
+								 * fieldWithPath("users.emaill").description(
+								 * "Email address of user"),
+								 * fieldWithPath("users.password").description(
+								 * "Password of user"),
+								 * fieldWithPath("users.created_at").
+								 * description("Date of creation"),
+								 * fieldWithPath("users.updated_at").
+								 * description("Last date of update"),
+								 * fieldWithPath("users.status") .description(
+								 * "Status of user {active, deactive or blocked}"
+								 * )
+								 */
 								subsectionWithPath("_embedded.users").description("Users json response"),
 								subsectionWithPath("_links").description("Users json links"),
-								subsectionWithPath("page").description("Users json pagging")
-										)
-						
-										));
-		;
+								subsectionWithPath("page").description("Users json pagging"))
+
+		));
+
 	}
 }
