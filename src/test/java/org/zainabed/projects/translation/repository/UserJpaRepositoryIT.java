@@ -36,7 +36,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 // @AutoConfigureMockMvc
-public class UserJpaRepositoryTest {
+public class UserJpaRepositoryIT {
 
 	MockMvc mvc;
 	@Autowired
@@ -47,10 +47,6 @@ public class UserJpaRepositoryTest {
 
 	@Rule
 	public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
-
-	public UserJpaRepositoryTest() {
-
-	}
 
 	@Before
 	public void loadModel() {
