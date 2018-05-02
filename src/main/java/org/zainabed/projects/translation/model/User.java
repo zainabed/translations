@@ -20,6 +20,7 @@ public class User extends BaseModel {
 	@Size(min = 5, max = 20)
 	private String username;
 
+	@NotNull
 	@Email
 	@Size(min = 5, max = 30)
 	private String email;

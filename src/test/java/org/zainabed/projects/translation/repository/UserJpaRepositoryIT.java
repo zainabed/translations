@@ -21,6 +21,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.zainabed.projects.translation.Application;
 import org.zainabed.projects.translation.model.User;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,23 +47,31 @@ public class UserJpaRepositoryIT {
 	@Rule
 	public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
 
+	User user;
+	Gson gson = new Gson();
+
 	@Before
 	public void loadModel() {
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context)
 				.apply(documentationConfiguration(this.restDocumentation)).build();
 
+		user = new User();
+		user.setUsername("testuser");
+		user.setEmail("testuser@test.org");
+		user.setPassword("abcdef");
+		 
 	}
 
 	@After
 	public void releaseModel() {
-
+		user = null;
 	}
 
 	@Test
 	public void shouldPostSingleEntity() throws Exception {
-
+		
 		mvc.perform(post("/users")
-				.content("{ \"username\": \"zainabed\", \"email\":\"test@test.org\",\"password\":\"abcde\"}")
+				.content(gson.toJson(user))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andDo(document("users"));
 	}
 
@@ -69,57 +79,63 @@ public class UserJpaRepositoryIT {
 
 	@Test
 	public void shouldReturn400StatusCodeForInvalidUsername() throws Exception {
-		mvc.perform(post("/users").content("{ \"username\":null, \"email\":\"test@test.org\", \"password\":\"abcde\" }")
+		user.setUsername(null);
+		mvc.perform(post("/users").content(gson.toJson(user))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	public void shouldReturn400StatusCauseUsernameLengthIsLessThen5() throws Exception {
+		user.setUsername("abcd");
 		mvc.perform(post("/users")
-				.content("{ \"username\":\"abcd\", \"email\":\"test@test.org\", \"password\":\"abcdef\" }")
+				.content(gson.toJson(user))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	public void shouldReturn400StatusCauseUsernameLengthIsMoreThen20() throws Exception {
+		user.setUsername("123456789012345678901");
 		mvc.perform(post("/users")
-				.content(
-						"{ \"username\":\"123456789012345678901\", \"email\":\"test@test.org\", \"password\":\"abcdef\" }")
+				.content(gson.toJson(user))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	public void shouldReturn400StatusCodeForInvalidEmail() throws Exception {
+		user.setEmail("abcdefg");
 		mvc.perform(
-				post("/users").content("{\"username\":\"testuser\", \"email\":\"abvdceef\", \"password\":\"abcded\"}")
+				post("/users").content(gson.toJson(user))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	public void shouldReturn400StatusCodeForEmptyEmail() throws Exception {
-		mvc.perform(post("/users").content("{ \"username\":null, \"email\":\"test@test.org\", \"password\":\"abcde\" }")
+		user.setEmail(null);
+		mvc.perform(post("/users").content(gson.toJson(user))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	public void shouldReturn400StatusCauseEmailLengthIsLessThen5() throws Exception {
-		mvc.perform(post("/users").content("{ \"username\":\"abcde\", \"email\":\"test\", \"password\":\"abcdef\" }")
+		user.setEmail("a@as");
+		mvc.perform(post("/users").content(gson.toJson(user))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	public void shouldReturn400StatusCauseEamilLengthIsMoreThen30() throws Exception {
+		user.setEmail("12345678@012345678901.345678901");
 		mvc.perform(post("/users")
-				.content(
-						"{ \"username\":\"abcde\", \"email\":\"123456@789012345678901234567.8901\", \"password\":\"abcdef\" }")
+				.content(gson.toJson(user))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	public void shouldReturn400StatusCodeForEmptyPassword() throws Exception {
+		user.setPassword(null);
 		mvc.perform(
-				post("/users").content("{ \"username\":\"abcsss\", \"email\":\"test@test.org\", \"password\":null }")
+				post("/users").content(gson.toJson(user))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is4xxClientError());
 	}
