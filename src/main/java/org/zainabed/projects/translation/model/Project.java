@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,13 @@ public class Project extends BaseModel {
 	
 	@ManyToMany
 	private List<User> users;
+	
+	@OneToMany(mappedBy="projects")
+	private List<Locale> locales;
+	
+	
+	@OneToMany(mappedBy="projects")
+	private List<Key> keys;
 	
 	
 	public String getName() {
@@ -63,6 +72,22 @@ public class Project extends BaseModel {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public List<Locale> getLocales() {
+		return locales;
+	}
+
+	public void setLocales(List<Locale> locales) {
+		this.locales = locales;
+	}
+
+	public List<Key> getKeys() {
+		return keys;
+	}
+
+	public void setKeys(List<Key> keys) {
+		this.keys = keys;
 	}
 
 	

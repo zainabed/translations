@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.zainabed.projects.translation.model.Key;
 
-@Repository
-@RepositoryRestResource(collectionResourceRel="key", path="key")
 public interface KeyRepository extends JpaRepository<Key, Long> {
 
 }

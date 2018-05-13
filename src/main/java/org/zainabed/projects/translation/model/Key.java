@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -25,8 +26,9 @@ public class Key extends BaseModel {
 	@Column(length = 50, nullable = false)
 	private String description;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Project project;
+	@ManyToOne
+	@JoinColumn(name="projectsId")
+	private Project projects;
 
 	public String getName() {
 		return name;
@@ -40,16 +42,18 @@ public class Key extends BaseModel {
 		return description;
 	}
 
+	public Project getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Project projects) {
+		this.projects = projects;
+	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public Project getProject() {
-		return project;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
+	
 
 }
