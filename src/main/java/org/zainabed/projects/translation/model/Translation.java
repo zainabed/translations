@@ -19,12 +19,13 @@ import org.hibernate.annotations.Cascade;
 @Table(name = "translation_translation")
 public class Translation extends BaseModel {
 
-	@NotNull
-	@OneToMany(mappedBy = "translations")
-	private List<Locale> locales;
+	@ManyToOne
+	@JoinColumn(name = "localesId")
+	private Locale locales;
 
-	@OneToMany(mappedBy = "translations")
-	private List<Key> keys;
+	@ManyToOne
+	@JoinColumn(name = "keysId")
+	private Key keys;
 
 	@ManyToOne
 	@JoinColumn(name = "projectsId")
@@ -50,28 +51,29 @@ public class Translation extends BaseModel {
 		this.verified = verified;
 	}
 
-	public List<Locale> getLocales() {
-		return locales;
-	}
-
-	public void setLocales(List<Locale> locales) {
-		this.locales = locales;
-	}
-
-	public List<Key> getKeys() {
-		return keys;
-	}
-
-	public void setKeys(List<Key> keys) {
-		this.keys = keys;
-	}
-
+	
 	public Project getProjects() {
 		return projects;
 	}
 
 	public void setProjects(Project projects) {
 		this.projects = projects;
+	}
+
+	public Locale getLocales() {
+		return locales;
+	}
+
+	public void setLocales(Locale locales) {
+		this.locales = locales;
+	}
+
+	public Key getKeys() {
+		return keys;
+	}
+
+	public void setKeys(Key keys) {
+		this.keys = keys;
 	}
 
 	

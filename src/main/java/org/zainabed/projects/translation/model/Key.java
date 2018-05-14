@@ -1,5 +1,7 @@
 package org.zainabed.projects.translation.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,15 +33,16 @@ public class Key extends BaseModel {
 	@JoinColumn(name = "projectsId")
 	private Project projects;
 
-	@ManyToOne
-	@JoinColumn(name = "translationsId")
-	private Translation translations;
-
-	public Translation getTranslations() {
+	@OneToMany(mappedBy="keys")
+	private List<Translation> translations;
+	
+	
+	
+	public List<Translation> getTranslations() {
 		return translations;
 	}
 
-	public void setTranslations(Translation translations) {
+	public void setTranslations(List<Translation> translations) {
 		this.translations = translations;
 	}
 
