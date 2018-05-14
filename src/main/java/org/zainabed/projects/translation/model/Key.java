@@ -27,8 +27,20 @@ public class Key extends BaseModel {
 	private String description;
 
 	@ManyToOne
-	@JoinColumn(name="projectsId")
+	@JoinColumn(name = "projectsId")
 	private Project projects;
+
+	@ManyToOne
+	@JoinColumn(name = "translationsId")
+	private Translation translations;
+
+	public Translation getTranslations() {
+		return translations;
+	}
+
+	public void setTranslations(Translation translations) {
+		this.translations = translations;
+	}
 
 	public String getName() {
 		return name;
@@ -53,7 +65,5 @@ public class Key extends BaseModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	
 
 }

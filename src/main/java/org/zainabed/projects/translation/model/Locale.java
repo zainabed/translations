@@ -27,8 +27,12 @@ public class Locale extends BaseModel {
 	private String code;
 
 	@ManyToOne
-	@JoinColumn(name="projectsId")
+	@JoinColumn(name = "projectsId")
 	private Project projects;
+
+	@ManyToOne
+	@JoinColumn(name = "translationsId")
+	private Translation translations;
 
 	private Boolean defualt;
 
@@ -64,7 +68,13 @@ public class Locale extends BaseModel {
 		this.projects = projects;
 	}
 
-	
+	public Translation getTranslations() {
+		return translations;
+	}
+
+	public void setTranslations(Translation translations) {
+		this.translations = translations;
+	}
 
 	
 }

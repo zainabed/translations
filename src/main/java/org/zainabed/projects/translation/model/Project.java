@@ -41,6 +41,9 @@ public class Project extends BaseModel {
 	@OneToMany(mappedBy="projects")
 	private List<Key> keys;
 	
+	@OneToMany(mappedBy="projects")
+	private List<Translation> translations;
+	
 	
 	public String getName() {
 		return name;
@@ -88,6 +91,14 @@ public class Project extends BaseModel {
 
 	public void setKeys(List<Key> keys) {
 		this.keys = keys;
+	}
+
+	public List<Translation> getTranslations() {
+		return translations;
+	}
+
+	public void setTranslations(List<Translation> translations) {
+		this.translations = translations;
 	}
 
 	
