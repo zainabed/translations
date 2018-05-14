@@ -30,7 +30,7 @@ public class Locale extends BaseModel {
 	private String code;
 
 	@ManyToOne
-	@JoinColumn(name = "projectsId")
+	@JoinColumn(name = "projects_id")
 	private Project projects;
 
 	@OneToMany(mappedBy="locales")

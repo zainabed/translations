@@ -20,8 +20,8 @@ import javax.validation.constraints.Size;
 public class Project extends BaseModel {
 
 	@NotNull
-	@Size(min = 5, max = 15)
-	@Column(length = 15, nullable = false)
+	@Size(min = 5, max = 50)
+	@Column(length = 50, nullable = false)
 	private String name;
 
 	@NotNull

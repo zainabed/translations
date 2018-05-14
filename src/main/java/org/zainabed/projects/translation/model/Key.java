@@ -30,7 +30,7 @@ public class Key extends BaseModel {
 	private String description;
 
 	@ManyToOne
-	@JoinColumn(name = "projectsId")
+	@JoinColumn(name = "projects_id")
 	private Project projects;
 
 	@OneToMany(mappedBy="keys")
