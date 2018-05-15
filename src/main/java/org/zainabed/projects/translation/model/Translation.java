@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
 
@@ -32,6 +33,7 @@ public class Translation extends BaseModel {
 	private Project projects;
 
 	@NotNull
+	@Size(min = 2, max = 500)
 	private String content;
 	private Boolean verified;
 
@@ -51,7 +53,6 @@ public class Translation extends BaseModel {
 		this.verified = verified;
 	}
 
-	
 	public Project getProjects() {
 		return projects;
 	}
@@ -76,5 +77,4 @@ public class Translation extends BaseModel {
 		this.keys = keys;
 	}
 
-	
 }
