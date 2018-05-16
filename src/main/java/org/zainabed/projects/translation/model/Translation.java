@@ -21,15 +21,15 @@ import org.hibernate.annotations.Cascade;
 public class Translation extends BaseModel {
 
 	@ManyToOne
-	@JoinColumn(name = "localesId")
+	@JoinColumn(name = "locales_id")
 	private Locale locales;
 
 	@ManyToOne
-	@JoinColumn(name = "keysId")
+	@JoinColumn(name = "keys_id")
 	private Key keys;
 
 	@ManyToOne
-	@JoinColumn(name = "projectsId")
+	@JoinColumn(name = "projects_id")
 	private Project projects;
 
 	@NotNull

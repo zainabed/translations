@@ -25,8 +25,8 @@ public class Project extends BaseModel {
 	private String name;
 
 	@NotNull
-	@Size(min = 10, max = 200)
-	@Column(length = 200, nullable = false)
+	@Size(min = 10, max = 500)
+	@Column(length = 500, nullable = false)
 	private String description;
 
 	private String imageUri;
