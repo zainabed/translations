@@ -1,12 +1,17 @@
 package org.zainabed.projects.translation.model;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
 
@@ -15,33 +20,22 @@ import org.hibernate.annotations.Cascade;
 @Table(name = "translation_translation")
 public class Translation extends BaseModel {
 
-	@NotNull
-	@ManyToOne(cascade= CascadeType.PERSIST)
-	private Key key;
+	@ManyToOne
+	@JoinColumn(name = "locales_id")
+	private Locale locales;
+
+	@ManyToOne
+	@JoinColumn(name = "keys_id")
+	private Key keys;
+
+	@ManyToOne
+	@JoinColumn(name = "projects_id")
+	private Project projects;
 
 	@NotNull
-	@ManyToOne(cascade= CascadeType.PERSIST)
-	private Locale locale;
-
-	@NotNull
+	@Size(min = 2, max = 500)
 	private String content;
 	private Boolean verified;
-
-	public Key getKey() {
-		return key;
-	}
-
-	public void setKey(Key key) {
-		this.key = key;
-	}
-
-	public Locale getLocale() {
-		return locale;
-	}
-
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
 
 	public String getContent() {
 		return content;
@@ -57,6 +51,30 @@ public class Translation extends BaseModel {
 
 	public void setVerified(Boolean verified) {
 		this.verified = verified;
+	}
+
+	public Project getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Project projects) {
+		this.projects = projects;
+	}
+
+	public Locale getLocales() {
+		return locales;
+	}
+
+	public void setLocales(Locale locales) {
+		this.locales = locales;
+	}
+
+	public Key getKeys() {
+		return keys;
+	}
+
+	public void setKeys(Key keys) {
+		this.keys = keys;
 	}
 
 }

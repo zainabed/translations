@@ -1,11 +1,15 @@
 package org.zainabed.projects.translation.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,8 +29,12 @@ public class Locale extends BaseModel {
 	@Column(length = 6, nullable = false)
 	private String code;
 
-	@ManyToOne(fetch=FetchType.EAGER)
-	private Project project;
+	@ManyToOne
+	@JoinColumn(name = "projects_id")
+	private Project projects;
+
+	@OneToMany(mappedBy="locales")
+	private List<Translation> translations;
 
 	private Boolean defualt;
 
@@ -54,13 +62,22 @@ public class Locale extends BaseModel {
 		this.defualt = defualt;
 	}
 
-	public Project getProject() {
-		return project;
+	public Project getProjects() {
+		return projects;
 	}
 
-	public void setProject(Project project) {
-		this.project = project;
+	public void setProjects(Project projects) {
+		this.projects = projects;
 	}
 
+	public List<Translation> getTranslations() {
+		return translations;
+	}
+
+	public void setTranslations(List<Translation> translations) {
+		this.translations = translations;
+	}
+
+	
 	
 }

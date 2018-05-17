@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -18,19 +20,29 @@ import javax.validation.constraints.Size;
 public class Project extends BaseModel {
 
 	@NotNull
-	@Size(min = 5, max = 15)
-	@Column(length = 15, nullable = false)
+	@Size(min = 5, max = 50)
+	@Column(length = 50, nullable = false)
 	private String name;
 
 	@NotNull
-	@Size(min = 10, max = 200)
-	@Column(length = 200, nullable = false)
+	@Size(min = 10, max = 500)
+	@Column(length = 500, nullable = false)
 	private String description;
 
 	private String imageUri;
 	
 	@ManyToMany
 	private List<User> users;
+	
+	@OneToMany(mappedBy="projects")
+	private List<Locale> locales;
+	
+	
+	@OneToMany(mappedBy="projects")
+	private List<Key> keys;
+	
+	@OneToMany(mappedBy="projects")
+	private List<Translation> translations;
 	
 	
 	public String getName() {
@@ -63,6 +75,30 @@ public class Project extends BaseModel {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public List<Locale> getLocales() {
+		return locales;
+	}
+
+	public void setLocales(List<Locale> locales) {
+		this.locales = locales;
+	}
+
+	public List<Key> getKeys() {
+		return keys;
+	}
+
+	public void setKeys(List<Key> keys) {
+		this.keys = keys;
+	}
+
+	public List<Translation> getTranslations() {
+		return translations;
+	}
+
+	public void setTranslations(List<Translation> translations) {
+		this.translations = translations;
 	}
 
 	
