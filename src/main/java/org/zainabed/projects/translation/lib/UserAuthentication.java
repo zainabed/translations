@@ -7,9 +7,9 @@ import org.zainabed.projects.translation.model.User;
 import org.zainabed.projects.translation.model.UserEntity;
 import org.zainabed.projects.translation.repository.UserJpaRepository;
 
-import com.zainabed.demo.authorize.entity.UserCredential;
-import com.zainabed.demo.authorize.entity.UserDetail;
-import com.zainabed.demo.authorize.service.JwtAuthenticationService;
+import com.zainabed.spring.security.jwt.entity.UserCredential;
+import com.zainabed.spring.security.jwt.entity.UserDetail;
+import com.zainabed.spring.security.jwt.service.JwtAuthenticationService;
 
 @Service
 public class UserAuthentication implements JwtAuthenticationService {

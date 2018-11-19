@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.zainabed.demo.authorize.entity.UserDetail;
+import com.zainabed.spring.security.jwt.entity.UserDetail;
 
 import io.jsonwebtoken.Claims;
 

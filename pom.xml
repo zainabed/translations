@@ -32,9 +32,9 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.zainabed.demo</groupId>
-			<artifactId>demo-authorize</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>com.zainabed.spring</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
