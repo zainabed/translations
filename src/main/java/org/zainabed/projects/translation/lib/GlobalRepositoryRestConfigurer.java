@@ -15,7 +15,7 @@ public class GlobalRepositoryRestConfigurer extends RepositoryRestConfigurerAdap
 				.allowedOrigins("*") //
 				.allowedMethods("OPTIONS", "HEAD", "GET", "PUT", "POST", "DELETE", "PATCH") //
 				.allowedHeaders("*") //
-				.exposedHeaders("WWW-Authenticate") //
+				.exposedHeaders("WWW-Authenticate, Authorization") //
 				.allowCredentials(true).maxAge(TimeUnit.DAYS.toSeconds(1));
 
 	}

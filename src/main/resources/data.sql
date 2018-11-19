@@ -34,3 +34,6 @@ INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_
   (15, 'Enter your social security number and press Log in. Start the BankID app on your mobile or tablet and enter your security code.', 134545, 22323, 7),
   (16, 'Social security number', 134545, 22323, 8);
   
+INSERT INTO translation_user(username, password, email) VALUES 
+('zainabed', '1234', 'zainabed@test.org'),
+('testuser', '1234', 'testuser@test.org');

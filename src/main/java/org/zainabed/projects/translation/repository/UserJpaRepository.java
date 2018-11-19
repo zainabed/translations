@@ -9,4 +9,5 @@ import org.zainabed.projects.translation.model.User;
 @RepositoryRestResource(path="users")
 public interface UserJpaRepository extends JpaRepository<User, Long> {
 	public User findByUsername(String username);
+	public User findByUsernameAndPassword(String username, String password);
 }
