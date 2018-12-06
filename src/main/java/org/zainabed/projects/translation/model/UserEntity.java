@@ -26,8 +26,14 @@ public class UserEntity implements UserDetail {
 	public UserEntity(User user) {
 		this.username = user.getUsername();
 		this.password = user.getPassword();
-		this.roles = new ArrayList<String>();
-		roles.add("ROLE_USER");
+		List<Role> roles = user.getRoles();
+		if (roles != null) {
+			this.roles = roles.stream().map(role -> role.getName()).collect(Collectors.toList());
+		} else {
+			this.roles = new ArrayList<>();
+			this.roles.add("ROLE_USER");
+		}
+
 	}
 
 	public void setUsername(String username) {
@@ -63,7 +69,8 @@ public class UserEntity implements UserDetail {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+		return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+				.collect(Collectors.toList());
 	}
 
 	@Override
