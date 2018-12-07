@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -31,6 +33,13 @@ public class User extends BaseModel {
 
 	@ManyToMany
 	private List<Project> projects;
+
+	@ManyToMany
+	@JoinTable(
+			name = "user_roles", 
+			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id") , 
+			inverseJoinColumns  = @JoinColumn(name = "role_id", referencedColumnName = "id") )
+	private List<Role> roles;
 
 	public String getUsername() {
 		return username;
@@ -70,6 +79,14 @@ public class User extends BaseModel {
 
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 }

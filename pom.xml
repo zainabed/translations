@@ -33,12 +33,17 @@
 		</dependency>
 		<dependency>
 			<groupId>com.zainabed.spring</groupId>
-			<artifactId>spring-security-jwt</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<artifactId>zainabed-spring-security-jwt</artifactId>
+			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,7 +91,7 @@
 					<dependency>
 						<groupId>org.springframework.restdocs</groupId>
 						<artifactId>spring-restdocs-asciidoctor</artifactId>
-						<version>2.0.1.RELEASE</version>
+						<version>2.0.2.RELEASE</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -143,66 +148,18 @@
 					<skipITs>${integration.test.skip}</skipITs>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.1</version>
-				<configuration>
-					<formats>
-						<format>xml</format>
-						<format>html</format>
-					</formats>
-				</configuration>
-				<executions>
-					<execution>
-						<id>cobertura-check</id>
-						<phase>test</phase>
-						<goals>
-							<goal>cobertura</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.9</version>
-				<executions>
-					<execution>
-						<id>jacoco-prepare-agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>jacoco-prepare-agent-integration</id>
-						<goals>
-							<goal>prepare-agent-integration</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>jacoco-report</id>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>jacoco-integration</id>
-						<goals>
-							<goal>report-integration</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>jacoco-check</id>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<configuration>
-							<rules />
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>oss-sonatype</id>
+			<name>oss-sonatype</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+			<snapshots>
+				<updatePolicy>daily</updatePolicy>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
