@@ -1,0 +1,28 @@
+[[resources-project]]
+== Project
+
+List all project for given user credentials.
+
+[[resources-project-list]]
+=== Project List
+
+
+A `GET` request is used to access the project list
+
+operation::project-list[snippets='curl-request,http-request,request-headers']
+
+
+[[resources-project-get]]
+=== Get a single Project
+
+Get single project object.
+
+operation::project-get[snippets='curl-request,http-request,request-headers,http-response']
+
+
+[[resources-project-post]]
+=== Create a new Project
+
+`POST` request to generate new Project object.
+
+operation::project-post[snippets='curl-request,http-request,request-fields,request-headers,http-response']

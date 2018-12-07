@@ -65,27 +65,9 @@ use of HTTP status codes.
 [[resources]]
 = Resources
 
-[[resources-project]]
-== Project
+Application HTTP resources.
 
-List all project for given user credentials.
-
-[[resources-project-list]]
-=== Project List
-
-
-A `GET` request is used to access the project list
-
-operation::project-list[snippets='curl-request,http-request,request-headers']
-
-
-[[resources-project-get]]
-=== Get a single Project
-
-Get single project object.
-
-operation::project-get[snippets='curl-request,http-request,request-headers,http-response']
-
+include::projects.adoc[]
 
 [[resources-user]]
 == User
