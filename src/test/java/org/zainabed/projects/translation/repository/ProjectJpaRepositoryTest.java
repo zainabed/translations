@@ -8,6 +8,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,6 +61,7 @@ public class ProjectJpaRepositoryTest {
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
 
+	
 	User user;
 	AuthenticationToken token;
 	String authToken;
@@ -94,6 +96,7 @@ public class ProjectJpaRepositoryTest {
 		authHeader = AuthorizationHeaderService.AUTH_HEADER;
 	}
 
+	
 	@Test
 	public void shouldReturnProjectList() throws Exception {
 		mvc.perform(get("/projects").header(authHeader, authToken)).andDo(print()).andExpect(status().isOk()).andDo(
@@ -118,6 +121,35 @@ public class ProjectJpaRepositoryTest {
 								fieldWithPath("description").description("Project description"),
 								fieldWithPath("id").optional().description("Project unique value"))));
 	}
+
+	@Test
+	public void shouldUpdateProject() throws Exception {
+		project = getProject();
+		project.setId(1);
+		mvc.perform(RestDocumentationRequestBuilders.put("/projects/{id}", 1).header(authHeader, authToken)
+				.content(gson.toJson(project)))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(document("project-put", requestHeaders(headerWithName(authHeader).description(authHeaderDesc)),
+						pathParameters(parameterWithName("id").description("Project unique id")),
+						requestFields(fieldWithPath("name").description("Project name"),
+								fieldWithPath("description").description("Project description"),
+								fieldWithPath("id").optional().description("Project unique value"))));
+
+	}
+	
+
+	/*@Test
+	public void shouldDeleteProject() throws Exception {
+		project = getProject();
+		project.setId(1);
+		mvc.perform(RestDocumentationRequestBuilders.post("/projects").header(authHeader, authToken)
+				.content(gson.toJson(project)).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated());
+		
+		mvc.perform(delete("/projects/{id}", project.getId())
+				.header(authHeader, authToken))
+		.andExpect(status().is2xxSuccessful());
+	}*/
 
 	public Project getProject() {
 		project = new Project();

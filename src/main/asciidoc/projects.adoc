@@ -26,3 +26,10 @@ operation::project-get[snippets='curl-request,http-request,request-headers,http-
 `POST` request to generate new Project object.
 
 operation::project-post[snippets='curl-request,http-request,request-fields,request-headers,http-response']
+
+[[resources-project-put]]
+=== Update a exsiting Project
+
+`PUT` request to update existing Project object.
+
+operation::project-put[snippets='curl-request,http-request,request-fields,request-headers,http-response']
