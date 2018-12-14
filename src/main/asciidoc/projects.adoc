@@ -12,12 +12,12 @@ A `GET` request is used to access the project list
 operation::project-list[snippets='curl-request,http-request,request-headers']
 
 
-[[resources-project-get]]
+[[resources-project-get-one]]
 === Get a single Project
 
 Get single project object.
 
-operation::project-get[snippets='curl-request,http-request,request-headers,http-response']
+operation::project-get-one[snippets='curl-request,http-request,path-parameters,request-headers,http-response']
 
 
 [[resources-project-post]]
@@ -26,3 +26,17 @@ operation::project-get[snippets='curl-request,http-request,request-headers,http-
 `POST` request to generate new Project object.
 
 operation::project-post[snippets='curl-request,http-request,request-fields,request-headers,http-response']
+
+[[resources-project-put]]
+=== Update a exsiting Project
+
+`PUT` request to update existing Project object.
+
+operation::project-put[snippets='curl-request,http-request,request-fields,request-headers,http-response']
+
+[[resources-project-delete-one]]
+=== Delete a single Project
+
+Delete single project object.
+
+operation::project-delete-one[snippets='curl-request,http-request,path-parameters,request-headers,http-response']

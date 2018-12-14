@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -34,7 +36,11 @@ public class Project extends BaseModel {
 	@ManyToMany
 	private List<User> users;
 	
-	@OneToMany(mappedBy="projects")
+	@ManyToMany
+	@JoinTable(
+			name = "project_locales", 
+			joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id") , 
+			inverseJoinColumns  = @JoinColumn(name = "locale_id", referencedColumnName = "id") )
 	private List<Locale> locales;
 	
 	

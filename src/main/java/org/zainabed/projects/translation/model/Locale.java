@@ -4,11 +4,9 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -29,9 +27,8 @@ public class Locale extends BaseModel {
 	@Column(length = 6, nullable = false)
 	private String code;
 
-	@ManyToOne
-	@JoinColumn(name = "projects_id")
-	private Project projects;
+	@ManyToMany
+	private List<Project> projects;
 
 	@OneToMany(mappedBy="locales")
 	private List<Translation> translations;
@@ -62,11 +59,11 @@ public class Locale extends BaseModel {
 		this.defualt = defualt;
 	}
 
-	public Project getProjects() {
+	public List<Project> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(Project projects) {
+	public void setProjects(List<Project> projects) {
 		this.projects = projects;
 	}
 
