@@ -17,12 +17,15 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 	@Override
 	Project save(Project entity);
 
-	@PreAuthorize("ROLE_ADMIN")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Override
 	void deleteById(Long aLong);
 
-	@PreAuthorize("ROLE_ADMIN")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Override
 	void delete(Project project);
 
-	@PreAuthorize("ROLE_ADMIN")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Override
 	void deleteAll();
 }

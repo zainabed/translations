@@ -2,9 +2,14 @@ INSERT INTO translation_project (id, name, description) VALUES
   (134545, 'First Card Admin', 'First Card offers a complete payment system for all purchases and expenses in the service. For companies that want a fast, economical and secure administration of invoices and travel bills. First Card makes it easy for the traveler to write travel calculations and gives the company total control and aggregate travel statistics. The card can be obtained with connection to MasterCard or Visa.'),
   (254545, 'IW Project', 'IW Project Description');
 
-INSERT INTO translation_locale (id, name, code , projects_id) VALUES
-  (54533, 'Swedish', 'sv-SE' , 134545),
-  (22323, 'Swedish English', 'sv-EN', 134545);
+INSERT INTO translation_locale (id, name, code ) VALUES
+  (54533, 'Swedish', 'sv-SE'),
+  (22323, 'Swedish English', 'sv-EN');
+  
+  
+INSERT INTO project_locales(project_id, locale_id) VALUES 
+(134545,54533),
+(134545,22323);
 
 INSERT INTO translation_key (id, name, description , projects_id) VALUES
   (1, 'F_Lo_Title', 'Login page title' , 134545),
@@ -34,6 +39,27 @@ INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_
   (15, 'Enter your social security number and press Log in. Start the BankID app on your mobile or tablet and enter your security code.', 134545, 22323, 7),
   (16, 'Social security number', 134545, 22323, 8);
   
-INSERT INTO translation_user(username, password, email) VALUES 
-('zainabed', '1234', 'zainabed@test.org'),
-('testuser', '1234', 'testuser@test.org');
+INSERT INTO translation_user(id, username, password, email) VALUES 
+(1, 'zainabed', '1234', 'zainabed@test.org'),
+(2, 'testuser', '1234', 'testuser@test.org'),
+(3, 'testsupport', '1234', 'testsupport@test.org'),
+(4, 'testtranslator', '1234', 'testtranslator@test.org'),
+(5, 'testpo', '1234', 'testpo@test.org');
+
+INSERT INTO role(id,name) VALUES 
+(1, "ROLE_ADMIN"),
+(2, "ROLE_USER"),
+(3, "ROLE_SUPPOIRT"),
+(4, "ROLE_TRANSLATOR"),
+(5, "ROLE_PO");
+
+INSERT INTO user_roles(user_id, role_id) VALUES 
+(1, 1),
+(1, 2),
+(2, 2),
+(3, 2),
+(3, 3),
+(4, 2),
+(4, 4),
+(5, 2),
+(5, 5);
