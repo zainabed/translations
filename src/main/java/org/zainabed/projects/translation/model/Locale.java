@@ -18,12 +18,12 @@ import javax.validation.constraints.Size;
 public class Locale extends BaseModel {
 
 	@NotNull
-	@Size(min = 5, max = 20)
+	@Size(min = 2, max = 20)
 	@Column(length = 20, nullable = false)
 	private String name;
 
 	@NotNull
-	@Size(min = 5, max = 6)
+	@Size(min = 2, max = 6)
 	@Column(length = 6, nullable = false)
 	private String code;
 
