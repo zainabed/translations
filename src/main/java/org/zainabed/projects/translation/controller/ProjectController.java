@@ -1,16 +1,20 @@
 package org.zainabed.projects.translation.controller;
 
+import org.hibernate.mapping.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.zainabed.projects.translation.model.Locale;
+import org.zainabed.projects.translation.model.MapValue;
 import org.zainabed.projects.translation.model.Project;
+import org.zainabed.projects.translation.model.Translation;
 import org.zainabed.projects.translation.repository.LocaleRepository;
 import org.zainabed.projects.translation.repository.ProjectRepository;
+import org.zainabed.projects.translation.repository.TranslationRepository;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/projects")
@@ -21,6 +25,9 @@ public class ProjectController {
 
 	@Autowired
 	LocaleRepository localeRepository;
+
+	@Autowired
+	private TranslationRepository translationRepository;
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(path = "/{id}/locales/{localeId}")
@@ -38,5 +45,17 @@ public class ProjectController {
 		Locale locale = localeRepository.getOne(localeId);
 		project.getLocales().add(locale);
 		repository.save(project);
+	}
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping(path = "/{id}/locales/{localeId}/download")
+	public Map<String, String> download(@PathVariable("id") Long projectId, @PathVariable("localeId") Long localeId) {
+		List<Translation> translations = translationRepository.findAllByLocalesIdAndProjectsId(localeId, projectId);
+		return translations.stream().map(t -> {
+			MapValue mapValue = new MapValue();
+			mapValue.setKey(t.getKeys().getName());
+			mapValue.setValue(t.getContent());
+			return mapValue;
+		}).collect(Collectors.toMap(MapValue::getKey, MapValue::getValue));
 	}
 }

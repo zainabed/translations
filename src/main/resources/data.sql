@@ -4,7 +4,11 @@ INSERT INTO translation_project (id, name, description) VALUES
 
 INSERT INTO translation_locale (id, name, code ) VALUES
   (22323, 'Swedish', 'sv'),
-  (54533, 'Swedish English', 'en');
+  (54533, 'English', 'en'),
+  (22324, 'Finnish', 'fi'),
+  (22325, 'Danish', 'dk'),
+  (22326, 'Norwegian', 'nb'),
+  (22327, 'French', 'fr');
   
   
 INSERT INTO project_locales(project_id, locale_id) VALUES 
