@@ -6,7 +6,7 @@ INSERT INTO translation_locale (id, name, code ) VALUES
   (22323, 'Swedish', 'sv'),
   (54533, 'English', 'en'),
   (22324, 'Finnish', 'fi'),
-  (22325, 'Danish', 'dk'),
+  (22325, 'Danish', 'da'),
   (22326, 'Norwegian', 'nb'),
   (22327, 'French', 'fr');
   
