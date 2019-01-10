@@ -12,16 +12,16 @@ abstract public class BaseModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected long id;
+	protected Long id;
 
 	protected Date createdAt;
 	protected Date updatedAt;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

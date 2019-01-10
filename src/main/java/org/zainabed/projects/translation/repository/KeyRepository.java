@@ -16,19 +16,21 @@ import org.zainabed.projects.translation.model.Project;
 @PreAuthorize("hasRole('ROLE_USER')")
 public interface KeyRepository extends JpaRepository<Key, Long> {
 
-	@RestResource(path = "name", rel = "keys")
-	List<Key> findByNameStartsWithAndProjectsId(@Param("name") String name, @Param("projects") Long projects);
+    @RestResource(path = "name", rel = "keys")
+    List<Key> findByNameStartsWithAndProjectsId(@Param("name") String name, @Param("projects") Long projects);
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
-	@Override
-	Key save(Key entity);
+    List<Key> findAllByProjectsId(@Param("projects") Long projects);
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
-	void deleteById(Long aLong);
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
+    @Override
+    Key save(Key entity);
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
-	void delete(Key key);
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
+    void deleteById(Long aLong);
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
-	void deleteAll();
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
+    void delete(Key key);
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
+    void deleteAll();
 }

@@ -1,5 +1,6 @@
 package org.zainabed.projects.translation.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -27,8 +28,8 @@ public class Locale extends BaseModel {
 	@Column(length = 6, nullable = false)
 	private String code;
 
-	@ManyToMany
-	private List<Project> projects;
+	@ManyToMany(mappedBy = "locales")
+	private List<Project> projects = new ArrayList<>();
 
 	@OneToMany(mappedBy="locales")
 	private List<Translation> translations;

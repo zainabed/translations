@@ -116,7 +116,7 @@ public class ProjectJpaRepositoryTest {
 	@Test
 	public void shouldUpdateProject() throws Exception {
 		project = getProject();
-		project.setId(1);
+		project.setId(1L);
 		mvc.perform(put("/projects/{id}", 1).header(authHeader, authToken).content(gson.toJson(project)))
 				.andExpect(status().is2xxSuccessful())
 				.andDo(document("project-put",

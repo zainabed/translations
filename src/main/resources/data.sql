@@ -7,8 +7,7 @@ INSERT INTO translation_locale (id, name, code ) VALUES
   (54533, 'English', 'en'),
   (22324, 'Finnish', 'fi'),
   (22325, 'Danish', 'da'),
-  (22326, 'Norwegian', 'nb'),
-  (22327, 'French', 'fr');
+  (22326, 'Norwegian', 'nb');
   
   
 INSERT INTO project_locales(project_id, locale_id) VALUES 
@@ -47,7 +46,7 @@ INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_
     (18, 'Har du tillgång till Nordea Business hamnar du direkt inne i tjänsten. Du kan använda Internetbanken Företag genom att klicka på Internetbanken Företag under Övriga tjänster.', 134545, 22323, 9);
 
 INSERT INTO translation_user(id, username, password, email) VALUES 
-(1, 'zainabed', '1234', 'zainabed@test.org'),
+(1, 'admin', '1234', 'admin@test.org'),
 (2, 'testuser', '1234', 'testuser@test.org'),
 (3, 'testsupport', '1234', 'testsupport@test.org'),
 (4, 'testtranslator', '1234', 'testtranslator@test.org'),

@@ -20,61 +20,89 @@ import org.hibernate.annotations.Cascade;
 @Table(name = "translation_translation")
 public class Translation extends BaseModel {
 
-	@ManyToOne
-	@JoinColumn(name = "locales_id")
-	private Locale locales;
+    public enum STATUS {EXTENDED, UPDATED}
 
-	@ManyToOne
-	@JoinColumn(name = "keys_id")
-	private Key keys;
 
-	@ManyToOne
-	@JoinColumn(name = "projects_id")
-	private Project projects;
 
-	@NotNull
-	@Size(min = 2, max = 500)
-	private String content;
-	private Boolean verified;
+    @ManyToOne
+    @JoinColumn(name = "locales_id")
+    private Locale locales;
 
-	public String getContent() {
-		return content;
-	}
+    @ManyToOne
+    @JoinColumn(name = "keys_id")
+    private Key keys;
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    @ManyToOne
+    @JoinColumn(name = "projects_id")
+    private Project projects;
 
-	public Boolean getVerified() {
-		return verified;
-	}
+    @NotNull
+    @Size(min = 2, max = 500)
+    private String content;
+    private Boolean verified;
+    private Long extended;
+    private STATUS status;
 
-	public void setVerified(Boolean verified) {
-		this.verified = verified;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public Project getProjects() {
-		return projects;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setProjects(Project projects) {
-		this.projects = projects;
-	}
+    public Boolean getVerified() {
+        return verified;
+    }
 
-	public Locale getLocales() {
-		return locales;
-	}
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
 
-	public void setLocales(Locale locales) {
-		this.locales = locales;
-	}
+    public Project getProjects() {
+        return projects;
+    }
 
-	public Key getKeys() {
-		return keys;
-	}
+    public void setProjects(Project projects) {
+        this.projects = projects;
+    }
 
-	public void setKeys(Key keys) {
-		this.keys = keys;
-	}
+    public Locale getLocales() {
+        return locales;
+    }
 
+    public void setLocales(Locale locales) {
+        this.locales = locales;
+    }
+
+    public Key getKeys() {
+        return keys;
+    }
+
+    public void setKeys(Key keys) {
+        this.keys = keys;
+    }
+
+    public static Translation factoryObject(Translation translation) {
+        Translation newTranslation = new Translation();
+        newTranslation.setContent(translation.getContent());
+        newTranslation.setLocales(translation.getLocales());
+        return newTranslation;
+    }
+
+    public Long getExtended() {
+        return extended;
+    }
+
+    public void setExtended(Long extended) {
+        this.extended = extended;
+    }
+
+    public STATUS getStatus() {
+        return status;
+    }
+
+    public void setStatus(STATUS status) {
+        this.status = status;
+    }
 }

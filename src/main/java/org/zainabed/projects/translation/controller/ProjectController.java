@@ -11,6 +11,7 @@ import org.zainabed.projects.translation.model.Translation;
 import org.zainabed.projects.translation.repository.LocaleRepository;
 import org.zainabed.projects.translation.repository.ProjectRepository;
 import org.zainabed.projects.translation.repository.TranslationRepository;
+import org.zainabed.projects.translation.service.ProjectService;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,9 @@ public class ProjectController {
 
 	@Autowired
 	LocaleRepository localeRepository;
+
+	@Autowired
+	ProjectService projectService;
 
 	@Autowired
 	private TranslationRepository translationRepository;
@@ -57,5 +61,11 @@ public class ProjectController {
 			mapValue.setValue(t.getContent());
 			return mapValue;
 		}).collect(Collectors.toMap(MapValue::getKey, MapValue::getValue));
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping(path="/{id}/extend/{extend}")
+	public void extend(@PathVariable("id") Long projectId, @PathVariable("extend") Long extendProjectId) {
+		projectService.extendProject(projectId, extendProjectId);
 	}
 }
