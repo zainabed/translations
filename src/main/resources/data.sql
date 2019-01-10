@@ -1,6 +1,6 @@
 INSERT INTO translation_project (id, name, description) VALUES
-  (134545, 'Nordea brand', 'Nordea brand project'),
-  (254545, 'Nordea corporate', 'Nordea corporate project');
+  (134545, 'Nordea', 'Nordea brand project'),
+  (254545, 'Nordea Corporate', 'Nordea corporate project');
 
 INSERT INTO translation_locale (id, name, code ) VALUES
   (22323, 'Swedish', 'sv'),
@@ -53,11 +53,11 @@ INSERT INTO translation_user(id, username, password, email) VALUES
 (5, 'testpo', '1234', 'testpo@test.org');
 
 INSERT INTO role(id,name) VALUES 
-(1, "ROLE_ADMIN"),
-(2, "ROLE_USER"),
-(3, "ROLE_SUPPOIRT"),
-(4, "ROLE_TRANSLATOR"),
-(5, "ROLE_PO");
+(1, 'ROLE_ADMIN'),
+(2, 'ROLE_USER'),
+(3, 'ROLE_SUPPOIRT'),
+(4, 'ROLE_TRANSLATOR'),
+(5, 'ROLE_PO');
 
 INSERT INTO user_roles(user_id, role_id) VALUES 
 (1, 1),
