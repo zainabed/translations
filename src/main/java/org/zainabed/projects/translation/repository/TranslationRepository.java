@@ -22,6 +22,8 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
 	List<Translation> findAllByLocalesId(@Param("locales") Long id);
 	List<Translation> findAllByLocalesIdAndProjectsId(@Param("locales") Long localeId, @Param("projects") Long projectId);
 	List<Translation> findAllByProjectsId(@Param("projectsId") Long projectsId);
+	List<Translation> findAllByExtendedAndStatus(@Param("extended") Long extended, @Param("status")Translation.STATUS status);
+	List<Translation> findAllByExtended(@Param("extended") Long extended);
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO') or hasRole('ROLE_TRANSLATOR')")
 	@Override

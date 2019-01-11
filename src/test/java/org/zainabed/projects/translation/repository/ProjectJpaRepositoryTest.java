@@ -109,8 +109,9 @@ public class ProjectJpaRepositoryTest {
 				.andDo(document("project-post",
 						requestHeaders(headerWithName(authHeader).description(authHeaderAdminDesc)),
 						requestFields(fieldWithPath("name").description("Project name"),
-								fieldWithPath("description").description("Project description"),
-								fieldWithPath("id").optional().description("Project unique value"))));
+								fieldWithPath("description").description("Project description")
+						//		,fieldWithPath("id").optional().description("Project unique value")
+						)));
 	}
 
 	@Test

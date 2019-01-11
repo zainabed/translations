@@ -2,20 +2,15 @@ package org.zainabed.projects.translation.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
+import org.zainabed.projects.translation.model.event.TranslationEvent;
 
 @Entity
+//@EntityListeners(TranslationEvent.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "translation_translation")
 public class Translation extends BaseModel {
