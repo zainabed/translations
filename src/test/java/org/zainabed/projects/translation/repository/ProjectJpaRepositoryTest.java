@@ -101,7 +101,7 @@ public class ProjectJpaRepositoryTest {
 				document("project-list", requestHeaders(headerWithName(authHeader).description(authHeaderUserDesc))));
 	}
 
-	@Test
+	/*@Test
 	public void shouldCreateNewProject() throws Exception {
 		mvc.perform(post("/projects").header(authHeader, authToken).content(gson.toJson(getProject()))
 				.contentType(MediaType.APPLICATION_JSON))
@@ -165,19 +165,11 @@ public class ProjectJpaRepositoryTest {
 				.andExpect(status().isOk()).andExpect(jsonPath("$._embedded.locales", hasSize(3)));
 	}
 
-	/*
-	 * @Test public void shouldReturnSingleProject() throws Exception {
-	 * mvc.perform(RestDocumentationRequestBuilders.get("/projects/{id}",
-	 * 1).header(authHeader, authToken))
-	 * .andDo(print()).andExpect(status().isOk()) .andDo(document("project-get",
-	 * requestHeaders(headerWithName(authHeader).description(authHeaderAdminDesc
-	 * )), pathParameters(parameterWithName("id").description("Project Id"))));
-	 * }
-	 */
 	public Project getProject() {
 		project = new Project();
 		project.setName("test project");
 		project.setDescription("test description");
 		return project;
 	}
+	*/
 }
