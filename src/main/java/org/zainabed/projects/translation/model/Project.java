@@ -1,6 +1,7 @@
 package org.zainabed.projects.translation.model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +44,7 @@ public class Project extends BaseModel {
             name = "project_locales",
             joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "locale_id", referencedColumnName = "id"))
-    private List<Locale> locales;
+    private Set<Locale> locales;
 
 
     @OneToMany(mappedBy = "projects")
@@ -85,11 +86,11 @@ public class Project extends BaseModel {
         this.users = users;
     }
 
-    public List<Locale> getLocales() {
+    public Set<Locale> getLocales() {
         return locales;
     }
 
-    public void setLocales(List<Locale> locales) {
+    public void setLocales(Set<Locale> locales) {
         this.locales = locales;
     }
 
