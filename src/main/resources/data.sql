@@ -1,10 +1,13 @@
 INSERT INTO translation_project (id, name, description) VALUES
-  (134545, 'First Card Admin', 'First Card offers a complete payment system for all purchases and expenses in the service. For companies that want a fast, economical and secure administration of invoices and travel bills. First Card makes it easy for the traveler to write travel calculations and gives the company total control and aggregate travel statistics. The card can be obtained with connection to MasterCard or Visa.'),
-  (254545, 'IW Project', 'IW Project Description');
+  (134545, 'Nordea', 'Nordea brand project'),
+  (254545, 'Nordea Corporate', 'Nordea corporate project');
 
 INSERT INTO translation_locale (id, name, code ) VALUES
-  (54533, 'Swedish', 'sv-SE'),
-  (22323, 'Swedish English', 'sv-EN');
+  (22323, 'Swedish', 'sv'),
+  (54533, 'English', 'en'),
+  (22324, 'Finnish', 'fi'),
+  (22325, 'Danish', 'da'),
+  (22326, 'Norwegian', 'nb');
   
   
 INSERT INTO project_locales(project_id, locale_id) VALUES 
@@ -12,46 +15,49 @@ INSERT INTO project_locales(project_id, locale_id) VALUES
 (134545,22323);
 
 INSERT INTO translation_key (id, name, description , projects_id) VALUES
-  (1, 'F_Lo_Title', 'Login page title' , 134545),
-  (2, 'F_Lo_Subtitle', 'Login page subtitle', 134545),
-  (3, 'F_Lo_Placeholder', 'SSN input box placehoder text' , 134545),
-  (4, 'F_Lo_phonenumber', 'First card support phone number details' , 134545),
-  (5, 'F_Lo_LoginButton', 'Login button text' , 134545),
-  (6, 'F_Lo_InstructionHeading', 'Login instruction heading' , 134545),
-  (7, 'F_Lo_Instruction', 'Login instruction' , 134545),
-  (8, 'F_Lo_Inputfieldlable', 'Login input box lable' , 134545);
+  (1, 'app.title', 'Application title' , 134545),
+  (2, 'app.lang.en', 'Application language english', 134545),
+  (3, 'app.lang.sv', 'Application language swedish' , 134545),
+  (4, 'login.title', 'Login title' , 134545),
+  (5, 'login.description', 'Login description' , 134545),
+  (6, 'login.ssn.label', 'Login SSN field label' , 134545),
+  (7, 'login.instruction', 'Login instruction' , 134545),
+  (8, 'login.instruction.option.one', 'Login instruction option one' , 134545),
+  (9, 'login.instruction.option.two', 'Login instruction option two' , 134545);
   
-INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_id) VALUES 
-  (1, 'Logga in', 134545, 54533, 1),
-  (2, 'Använd Mobilt BankID för att logga in', 134545, 54533, 2),
-  (3, 'ååååmmddxxxx', 134545, 54533, 3),
-  (4, 'First Card, kundservice +46 771 40 71 70 ', 134545, 54533, 4),
-  (5, 'Logga in', 134545, 54533, 5),
-  (6, 'Så här loggar du in', 134545, 54533, 6),
-  (7, 'Ange ditt personnummer och klicka på Logga in. Starta BankID-appen på din mobil eller surfplatta och ange din säkerhetskod.', 134545, 54533, 7),
-  (8, 'Personnummer', 134545, 54533, 8),
-  (9, 'Log in', 134545, 22323, 1),
-  (10, 'Use Mobile BankID to log in', 134545, 22323, 2),
-  (11, 'yyyymmddxxxx', 134545, 22323, 3),
-  (12, 'First Card Customer Support +46 771 40 71 70  ', 134545, 22323, 4),
-  (13, 'Log in', 134545, 22323, 5),
-  (14, 'How to log in?', 134545, 22323, 6),
-  (15, 'Enter your social security number and press Log in. Start the BankID app on your mobile or tablet and enter your security code.', 134545, 22323, 7),
-  (16, 'Social security number', 134545, 22323, 8);
-  
+INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_id) VALUES
+    (1, 'Nordea Brand', 134545, 54533, 1),
+    (2, 'English', 134545, 54533, 2),
+    (3, 'Svenska', 134545, 54533, 3),
+    (4, 'Login', 134545, 54533, 4),
+    (5, 'Log in with your Mobile BankID', 134545, 54533, 5),
+    (6, 'User ID', 134545, 54533, 6),
+    (7, 'Mobile BankID', 134545, 54533, 7),
+    (8, 'Log on as usual.', 134545, 54533, 8),
+    (9, 'If you have access to Nordea Business, you will be forwarded to the service. After login, you can access Internetbanken Företag via a link below Other services.', 134545, 54533, 9),
+    (10, 'Nordea Brand', 134545, 22323, 1),
+    (11, 'English', 134545, 22323, 2),
+    (12, 'Svenska', 134545, 22323, 3),
+    (13, 'Logga in', 134545, 22323, 4),
+    (14, 'Logga in med Mobilt BankID', 134545, 22323, 5),
+    (15, 'Personnummer', 134545, 22323, 6),
+    (16, 'Mobilt BankID', 134545, 22323, 7),
+    (17, 'Logga in.', 134545, 22323, 8),
+    (18, 'Har du tillgång till Nordea Business hamnar du direkt inne i tjänsten. Du kan använda Internetbanken Företag genom att klicka på Internetbanken Företag under Övriga tjänster.', 134545, 22323, 9);
+
 INSERT INTO translation_user(id, username, password, email) VALUES 
-(1, 'zainabed', '1234', 'zainabed@test.org'),
+(1, 'admin', '1234', 'admin@test.org'),
 (2, 'testuser', '1234', 'testuser@test.org'),
 (3, 'testsupport', '1234', 'testsupport@test.org'),
 (4, 'testtranslator', '1234', 'testtranslator@test.org'),
 (5, 'testpo', '1234', 'testpo@test.org');
 
 INSERT INTO role(id,name) VALUES 
-(1, "ROLE_ADMIN"),
-(2, "ROLE_USER"),
-(3, "ROLE_SUPPOIRT"),
-(4, "ROLE_TRANSLATOR"),
-(5, "ROLE_PO");
+(1, 'ROLE_ADMIN'),
+(2, 'ROLE_USER'),
+(3, 'ROLE_SUPPOIRT'),
+(4, 'ROLE_TRANSLATOR'),
+(5, 'ROLE_PO');
 
 INSERT INTO user_roles(user_id, role_id) VALUES 
 (1, 1),

@@ -109,14 +109,15 @@ public class ProjectJpaRepositoryTest {
 				.andDo(document("project-post",
 						requestHeaders(headerWithName(authHeader).description(authHeaderAdminDesc)),
 						requestFields(fieldWithPath("name").description("Project name"),
-								fieldWithPath("description").description("Project description"),
-								fieldWithPath("id").optional().description("Project unique value"))));
+								fieldWithPath("description").description("Project description")
+						//		,fieldWithPath("id").optional().description("Project unique value")
+						)));
 	}
 
 	@Test
 	public void shouldUpdateProject() throws Exception {
 		project = getProject();
-		project.setId(1);
+		project.setId(1L);
 		mvc.perform(put("/projects/{id}", 1).header(authHeader, authToken).content(gson.toJson(project)))
 				.andExpect(status().is2xxSuccessful())
 				.andDo(document("project-put",
@@ -161,22 +162,14 @@ public class ProjectJpaRepositoryTest {
 				.andExpect(status().isOk());
 
 		mvc.perform(get("/projects/{id}/locales", 4).header(authHeader, authToken)).andDo(print())
-				.andExpect(status().isOk()).andExpect(jsonPath("$._embedded.locales", hasSize(3)));
+				.andExpect(status().isOk()).andExpect(jsonPath("$._embedded.locales", hasSize(2)));
 	}
 
-	/*
-	 * @Test public void shouldReturnSingleProject() throws Exception {
-	 * mvc.perform(RestDocumentationRequestBuilders.get("/projects/{id}",
-	 * 1).header(authHeader, authToken))
-	 * .andDo(print()).andExpect(status().isOk()) .andDo(document("project-get",
-	 * requestHeaders(headerWithName(authHeader).description(authHeaderAdminDesc
-	 * )), pathParameters(parameterWithName("id").description("Project Id"))));
-	 * }
-	 */
 	public Project getProject() {
 		project = new Project();
 		project.setName("test project");
 		project.setDescription("test description");
 		return project;
 	}
+	
 }

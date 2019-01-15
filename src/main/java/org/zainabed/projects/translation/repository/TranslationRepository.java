@@ -9,6 +9,8 @@ import org.zainabed.projects.translation.model.Project;
 import org.zainabed.projects.translation.model.Translation;
 import org.zainabed.projects.translation.model.projection.TranslationView;
 
+import java.util.List;
+
 @PreAuthorize("hasRole('ROLE_USER')")
 @RepositoryRestResource(excerptProjection = TranslationView.class)
 public interface TranslationRepository extends JpaRepository<Translation, Long> {
@@ -16,6 +18,12 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
 	@RestResource(path = "get_one", rel = "translations")
 	Translation findByProjectsIdAndLocalesIdAndKeysId(@Param("projects") Long projects, @Param("locales") Long locales,
 			@Param("keys") Long keys);
+
+	List<Translation> findAllByLocalesId(@Param("locales") Long id);
+	List<Translation> findAllByLocalesIdAndProjectsId(@Param("locales") Long localeId, @Param("projects") Long projectId);
+	List<Translation> findAllByProjectsId(@Param("projectsId") Long projectsId);
+	List<Translation> findAllByExtendedAndStatus(@Param("extended") Long extended, @Param("status")Translation.STATUS status);
+	List<Translation> findAllByExtended(@Param("extended") Long extended);
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO') or hasRole('ROLE_TRANSLATOR')")
 	@Override

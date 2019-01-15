@@ -29,6 +29,8 @@ public class Key extends BaseModel {
 	@Column(length = 200, nullable = false)
 	private String description;
 
+	private Long extended;
+
 	@ManyToOne
 	@JoinColumn(name = "projects_id")
 	private Project projects;
@@ -68,6 +70,14 @@ public class Key extends BaseModel {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Long getExtended() {
+		return extended;
+	}
+
+	public void setExtended(Long extended) {
+		this.extended = extended;
 	}
 
 }
