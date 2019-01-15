@@ -17,7 +17,7 @@ import org.zainabed.projects.translation.model.Project;
 public interface KeyRepository extends JpaRepository<Key, Long> {
 
     @RestResource(path = "name", rel = "keys")
-    List<Key> findByNameStartsWithAndProjectsId(@Param("name") String name, @Param("projects") Long projects);
+    List<Key> findByNameContainingAndProjectsId(@Param("name") String name, @Param("projects") Long projects);
 
     List<Key> findAllByProjectsId(@Param("projects") Long projects);
 

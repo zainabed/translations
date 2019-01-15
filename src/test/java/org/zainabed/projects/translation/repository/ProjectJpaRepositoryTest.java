@@ -101,7 +101,7 @@ public class ProjectJpaRepositoryTest {
 				document("project-list", requestHeaders(headerWithName(authHeader).description(authHeaderUserDesc))));
 	}
 
-	/*@Test
+	@Test
 	public void shouldCreateNewProject() throws Exception {
 		mvc.perform(post("/projects").header(authHeader, authToken).content(gson.toJson(getProject()))
 				.contentType(MediaType.APPLICATION_JSON))
@@ -162,7 +162,7 @@ public class ProjectJpaRepositoryTest {
 				.andExpect(status().isOk());
 
 		mvc.perform(get("/projects/{id}/locales", 4).header(authHeader, authToken)).andDo(print())
-				.andExpect(status().isOk()).andExpect(jsonPath("$._embedded.locales", hasSize(3)));
+				.andExpect(status().isOk()).andExpect(jsonPath("$._embedded.locales", hasSize(2)));
 	}
 
 	public Project getProject() {
@@ -171,5 +171,5 @@ public class ProjectJpaRepositoryTest {
 		project.setDescription("test description");
 		return project;
 	}
-	*/
+	
 }

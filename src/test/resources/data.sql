@@ -12,5 +12,4 @@ INSERT INTO translation_locale (id, name, code) VALUES
 INSERT INTO project_locales(project_id, locale_id) VALUES 
 (1,1),
 (1,2),
-(4,1),
-(4,2);
+(4,1);
