@@ -5,6 +5,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.zainabed.projects.translation.model.Key;
 import org.zainabed.projects.translation.model.Project;
 import org.zainabed.projects.translation.model.Translation;
 import org.zainabed.projects.translation.model.projection.TranslationView;
@@ -24,6 +25,9 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
 	List<Translation> findAllByProjectsId(@Param("projectsId") Long projectsId);
 	List<Translation> findAllByExtendedAndStatus(@Param("extended") Long extended, @Param("status")Translation.STATUS status);
 	List<Translation> findAllByExtended(@Param("extended") Long extended);
+
+	List<Translation> findAllByKeysInAndProjectsId(@Param("keys") List<Key> keys, @Param("projects") Long projects);
+	List<Translation> findAllByKeysInAndProjectsIdAndLocalesId(@Param("keys") List<Key> keys, @Param("projects") Long projects, @Param("locales") Long locales);
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO') or hasRole('ROLE_TRANSLATOR')")
 	@Override

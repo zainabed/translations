@@ -16,7 +16,11 @@ import java.util.List;
 public class LocaleService {
 
     @Autowired
-    LocaleRepository repository;
+    private LocaleRepository repository;
+
+    public LocaleRepository getRepository() {
+        return repository;
+    }
 
     @Autowired
     ProjectRepository projectRepository;

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.zainabed.projects.translation.model.Key;
 import org.zainabed.projects.translation.model.Project;
+import org.zainabed.projects.translation.model.Translation;
 import org.zainabed.projects.translation.repository.KeyRepository;
 import org.zainabed.projects.translation.repository.ProjectRepository;
 
@@ -14,10 +15,11 @@ import java.util.stream.Collectors;
 public class KeyService {
 
     @Autowired
-    KeyRepository repository;
+    private KeyRepository repository;
 
-    @Autowired
-    ProjectRepository projectRepository;
+    public KeyRepository getRepository() {
+        return repository;
+    }
 
     public void extendKeysForProjects(Project project, Long extendProject) {
         List<Key> keys = repository.findAllByProjectsId(extendProject);
@@ -30,5 +32,25 @@ public class KeyService {
             return newKey;
         }).collect(Collectors.toList());
         repository.saveAll(newKeys);
+    }
+
+    public List<String> getKeyStringList(List<Key> keys) {
+        return keys.stream().map(Key::getName).collect(Collectors.toList());
+    }
+
+    public List<Key> getKeyListFromTranslations(List<Translation> translations) {
+        return translations.stream().map(t -> t.getKeys()).collect(Collectors.toList());
+    }
+
+    public List<Key> createNewKeysFromList(List<String> keys, Project project) {
+        List<Key> keyList = keys.stream().map(k -> {
+            Key key = new Key();
+            key.setName(k);
+            key.setDescription(k);
+            key.setProjects(project);
+            return key;
+        }).collect(Collectors.toList());
+
+        return repository.saveAll(keyList);
     }
 }

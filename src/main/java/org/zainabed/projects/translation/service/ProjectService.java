@@ -12,7 +12,11 @@ import java.util.Optional;
 public class ProjectService {
 
     @Autowired
-    ProjectRepository repository;
+    private ProjectRepository repository;
+
+    public ProjectRepository getRepository() {
+        return repository;
+    }
 
     @Autowired
     KeyService keyService;

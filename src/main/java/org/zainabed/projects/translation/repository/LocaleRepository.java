@@ -22,6 +22,8 @@ public interface LocaleRepository extends JpaRepository<Locale, Long> {
 	/*@Query("select l from translation_locale l join translation_project p where p.id = :id")
 	List<Locale> findAllByProjectId(@Param("id") Long projectId);*/
 
+	Locale findByCode(@Param("code") String code);
+
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
 	void deleteById(Long aLong);
 

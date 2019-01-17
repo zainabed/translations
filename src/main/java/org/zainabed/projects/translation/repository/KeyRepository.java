@@ -21,6 +21,8 @@ public interface KeyRepository extends JpaRepository<Key, Long> {
 
     List<Key> findAllByProjectsId(@Param("projects") Long projects);
 
+    List<Key> findAllByNameInAndProjectsId(@Param("name") List<String> codes, @Param("projects") Long projects);
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
     @Override
     Key save(Key entity);
