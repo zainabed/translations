@@ -2,6 +2,8 @@ package org.zainabed.projects.translation.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -17,9 +19,12 @@ import org.zainabed.projects.translation.model.Project;
 public interface KeyRepository extends JpaRepository<Key, Long> {
 
     @RestResource(path = "name", rel = "keys")
-    List<Key> findByNameContainingAndProjectsId(@Param("name") String name, @Param("projects") Long projects);
+    Page findByNameContainingAndProjectsId(@Param("name") String name, @Param("projects") Long projects, Pageable p);
 
     List<Key> findAllByProjectsId(@Param("projects") Long projects);
+
+    @RestResource(path = "from", rel = "keys")
+    Page findAllByProjectsId(@Param("projects") Long projects, Pageable p);
 
     List<Key> findAllByNameInAndProjectsId(@Param("name") List<String> codes, @Param("projects") Long projects);
 
