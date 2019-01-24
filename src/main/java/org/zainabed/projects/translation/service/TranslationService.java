@@ -135,7 +135,7 @@ public class TranslationService {
 
     public Map<String, String> getTranslationFromURI(TranslationUri translationUri) {
         RestTemplate restTemplate = new RestTemplate();
-        String remoteUrl = translationUri.getUri() + "/" + translationUri.getLocale();
+        String remoteUrl = translationUri.getUri();
         log.info(remoteUrl);
         HashMap<String, String> response = restTemplate.getForObject(remoteUrl, new HashMap<String, String>().getClass());
         log.info(response.toString());
