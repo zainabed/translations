@@ -38,6 +38,33 @@ public class Key extends BaseModel {
     @OneToMany(mappedBy = "keys")
     private List<Translation> translations;
 
+    public Key() {
+
+    }
+
+    public Key(Key key) {
+        this.name = key.getName();
+        this.description = key.getDescription();
+        this.extended = key.getId();
+        this.status = STATUS.EXTENDED;
+    }
+
+    public Key(Key key, Project project) {
+        this(key);
+        this.projects = project;
+    }
+
+    public Key(String key, Project project) {
+        name = key;
+        description = key;
+        this.projects = project;
+    }
+
+    public Key(Key key, Project project, STATUS status) {
+        this(key, project);
+        this.status = status;
+    }
+
 
     public List<Translation> getTranslations() {
         return translations;

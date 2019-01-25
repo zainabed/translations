@@ -24,7 +24,7 @@ abstract public class BaseModel {
 
     @PreUpdate
     public void beforeUpdate() {
-        this.status = STATUS.UPDATED;
+       // this.status = STATUS.UPDATED;
         this.updatedAt = new Date();
     }
 

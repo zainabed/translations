@@ -33,6 +33,23 @@ public class Translation extends BaseModel {
     private Long extended;
 
 
+    public Translation(){
+
+    }
+
+    public Translation(Translation translation){
+        content = translation.getContent();
+        locales = translation.getLocales();
+        extended = translation.getId();
+        status = STATUS.EXTENDED;
+    }
+
+    public Translation(Translation translation, Key keys){
+        this(translation);
+        projects = keys.getProjects();
+        this.keys = keys;
+    }
+
     public String getContent() {
         return content;
     }

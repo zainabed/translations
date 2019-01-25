@@ -43,4 +43,6 @@ public interface KeyRepository extends JpaRepository<Key, Long> {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
     void deleteAll();
+
+    List<Key> findAllByExtended(@Param("extended") Long id);
 }

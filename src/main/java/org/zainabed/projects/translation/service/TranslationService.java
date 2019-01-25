@@ -26,7 +26,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Component
-public class TranslationService implements ModelService<Translation>{
+public class TranslationService implements ModelService<Translation> {
 
     @Autowired
     private TranslationRepository repository;
@@ -46,6 +46,10 @@ public class TranslationService implements ModelService<Translation>{
         return repository;
     }
 
+    /**
+     * @param project
+     * @param extendProjectId
+     */
     public void extendTranslationsFor(Project project, Long extendProjectId) {
         List<Translation> translations = repository.findAllByProjectsId(extendProjectId);
         List<Key> keys = keyService.getRepository().findAllByProjectsId(project.getId());
@@ -64,6 +68,12 @@ public class TranslationService implements ModelService<Translation>{
         repository.saveAll(newTranslations);
     }
 
+    /**
+     * @param translationUri
+     * @param projectId
+     * @param localeId
+     * @return
+     */
     public List<Translation> importTranslationFromURI(TranslationUri translationUri, Long projectId, Long localeId) {
         Locale locale = localeService.getRepository().getOne(localeId);
         Project project = projectService.getRepository().getOne(projectId);
@@ -115,13 +125,24 @@ public class TranslationService implements ModelService<Translation>{
         return result;
     }
 
+    /**
+     * @param translations
+     * @param remoteTranslations
+     * @return
+     */
     public List<Translation> updateTranslationForRemoteTranslation(List<Translation> translations, Map<String, String> remoteTranslations) {
-        return translations.stream().map(t -> {
+        return translations.stream().peek(t -> {
             t.setContent(remoteTranslations.get(t.getKeys().getName()));
-            return t;
         }).collect(Collectors.toList());
     }
 
+    /**
+     * @param remoteKeys
+     * @param remoteTranslations
+     * @param project
+     * @param locale
+     * @return
+     */
     public List<Translation> createTranslationsForKeys(List<Key> remoteKeys, Map<String, String> remoteTranslations, Project project, Locale locale) {
 
         return remoteKeys.stream().map(k -> {
@@ -134,6 +155,10 @@ public class TranslationService implements ModelService<Translation>{
         }).collect(Collectors.toList());
     }
 
+    /**
+     * @param translationUri
+     * @return
+     */
     public Map<String, String> getTranslationFromURI(TranslationUri translationUri) {
         RestTemplate restTemplate = new RestTemplate();
         String remoteUrl = translationUri.getUri();
@@ -147,6 +172,9 @@ public class TranslationService implements ModelService<Translation>{
         return translation.keySet();
     }
 
+    /**
+     * @param translation
+     */
     @Override
     public void updateChild(Translation translation) {
         List<Translation> translations = repository.findAllByExtendedAndStatus(translation.getId(), BaseModel.STATUS.EXTENDED);
@@ -154,6 +182,13 @@ public class TranslationService implements ModelService<Translation>{
             return;
         }
         translations = translations.stream().peek(t -> t.update(translation)).collect(Collectors.toList());
+        repository.saveAll(translations);
+    }
+
+    @Override
+    public void addChild(Translation translation) {
+        List<Key> keys = keyService.getRepository().findAllByExtended(translation.getKeys().getId());
+        List<Translation> translations = keys.stream().map(k -> new Translation(translation, k)).collect(Collectors.toList());
         repository.saveAll(translations);
     }
 }
