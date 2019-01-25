@@ -10,14 +10,9 @@ import org.hibernate.annotations.Cascade;
 import org.zainabed.projects.translation.model.event.TranslationEvent;
 
 @Entity
-//@EntityListeners(TranslationEvent.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "translation_translation")
 public class Translation extends BaseModel {
-
-    public enum STATUS {EXTENDED, UPDATED}
-
-
 
     @ManyToOne
     @JoinColumn(name = "locales_id")
@@ -99,5 +94,14 @@ public class Translation extends BaseModel {
 
     public void setStatus(STATUS status) {
         this.status = status;
+    }
+
+    @PreUpdate
+    public void updateStatus(){
+        this.status = STATUS.UPDATED;
+    }
+
+    public void update(Translation translation){
+        content = translation.getContent();
     }
 }

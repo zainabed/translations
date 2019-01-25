@@ -8,20 +8,25 @@ import org.springframework.web.bind.annotation.*;
 import org.zainabed.projects.translation.model.Translation;
 import org.zainabed.projects.translation.model.event.TranslationEvent;
 import org.zainabed.projects.translation.repository.TranslationRepository;
+import org.zainabed.projects.translation.service.TranslationService;
+
+import javax.validation.Valid;
 
 //@RepositoryRestController
 //@RequestMapping("translations")
 public class TranslationController {
 
     @Autowired
-    TranslationRepository repository;
+    TranslationService translationService;
 
     Logger logger = LoggerFactory.getLogger(TranslationController.class);
 
     @PutMapping(path = "/{id}")
-    public Translation put(@RequestBody Translation translation) {
+    public Translation put(@Valid @RequestBody Translation translation) {
         logger.info("Inside Translation controller");
-        Translation saveTranslation = repository.save(translation);
+        translation.setStatus(Translation.STATUS.UPDATED);
+        Translation saveTranslation = translationService.getRepository().save(translation);
+        translationService.updateChild(translation);
         return saveTranslation;
     }
 }

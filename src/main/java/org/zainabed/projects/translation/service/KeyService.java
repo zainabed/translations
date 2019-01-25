@@ -9,6 +9,7 @@ import org.zainabed.projects.translation.repository.KeyRepository;
 import org.zainabed.projects.translation.repository.ProjectRepository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -42,7 +43,7 @@ public class KeyService {
         return translations.stream().map(t -> t.getKeys()).collect(Collectors.toList());
     }
 
-    public List<Key> createNewKeysFromList(List<String> keys, Project project) {
+    public List<Key> createNewKeysFromList(Set<String> keys, Project project) {
         List<Key> keyList = keys.stream().map(k -> {
             Key key = new Key();
             key.setName(k);

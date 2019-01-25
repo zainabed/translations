@@ -10,6 +10,8 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 abstract public class BaseModel {
 
+	public enum STATUS {EXTENDED, UPDATED}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;

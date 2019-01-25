@@ -20,12 +20,13 @@ import org.zainabed.projects.translation.repository.TranslationRepository;
 
 import java.io.StringReader;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Component
-public class TranslationService {
+public class TranslationService implements ModelService<Translation>{
 
     @Autowired
     private TranslationRepository repository;
@@ -73,7 +74,7 @@ public class TranslationService {
             Map<String, String> remoteTranslations = getTranslationFromURI(translationUri);
 
             // Convert translation into key array
-            List<String> newKeyList = getKeyList(remoteTranslations);
+            Set<String> newKeyList = getKeyList(remoteTranslations);
 
             // fetch keys exist in db
             List<Key> existingKeys = keyService.getRepository().findAllByNameInAndProjectsId(newKeyList, projectId);
@@ -87,7 +88,7 @@ public class TranslationService {
             List<Key> existingTranslationKeys = keyService.getKeyListFromTranslations(existingTranslations);
             List<String> existingTranslationKeyList = keyService.getKeyStringList(existingTranslationKeys);
             existingKeyList.removeAll(existingTranslationKeyList);
-            existingKeys = existingKeys.stream().filter(k-> existingKeyList.contains(k.getName())).collect(Collectors.toList());
+            existingKeys = existingKeys.stream().filter(k -> existingKeyList.contains(k.getName())).collect(Collectors.toList());
 
             // Add translation for existing keys
             List<Translation> existingKeyTranslations = createTranslationsForKeys(existingKeys, remoteTranslations, project, locale);
@@ -121,7 +122,7 @@ public class TranslationService {
         }).collect(Collectors.toList());
     }
 
-    public List<Translation> createTranslationsForKeys( List<Key> remoteKeys , Map<String, String> remoteTranslations, Project project, Locale locale) {
+    public List<Translation> createTranslationsForKeys(List<Key> remoteKeys, Map<String, String> remoteTranslations, Project project, Locale locale) {
 
         return remoteKeys.stream().map(k -> {
             Translation translation = new Translation();
@@ -142,8 +143,16 @@ public class TranslationService {
         return response;
     }
 
-    public List<String> getKeyList(Map<String, String> translation) {
-        return translation.entrySet().stream().map(m -> m.getKey()).collect(Collectors.toList());
+    public Set<String> getKeyList(Map<String, String> translation) {
+        return translation.keySet();
     }
 
+    public void updateChild(Translation translation) {
+        List<Translation> translations = repository.findAllByExtendedAndStatus(translation.getId(), BaseModel.STATUS.EXTENDED);
+        if (translations == null) {
+            return;
+        }
+        translations = translations.stream().peek(t -> t.update(translation)).collect(Collectors.toList());
+        repository.saveAll(translations);
+    }
 }

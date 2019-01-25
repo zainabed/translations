@@ -1,6 +1,7 @@
 package org.zainabed.projects.translation.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ public interface KeyRepository extends JpaRepository<Key, Long> {
     @RestResource(path = "from", rel = "keys")
     Page findAllByProjectsId(@Param("projects") Long projects, Pageable p);
 
-    List<Key> findAllByNameInAndProjectsId(@Param("name") List<String> codes, @Param("projects") Long projects);
+    List<Key> findAllByNameInAndProjectsId(@Param("name") Set<String> codes, @Param("projects") Long projects);
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
     @Override
