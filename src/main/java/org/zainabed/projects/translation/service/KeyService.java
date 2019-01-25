@@ -2,6 +2,7 @@ package org.zainabed.projects.translation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.zainabed.projects.translation.model.BaseModel;
 import org.zainabed.projects.translation.model.Key;
 import org.zainabed.projects.translation.model.Project;
 import org.zainabed.projects.translation.model.Translation;
@@ -13,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class KeyService {
+public class KeyService implements ModelService<Key> {
 
     @Autowired
     private KeyRepository repository;
@@ -30,6 +31,7 @@ public class KeyService {
             newKey.setExtended(k.getId());
             newKey.setName(k.getName());
             newKey.setDescription(k.getDescription());
+            newKey.setStatus(BaseModel.STATUS.EXTENDED);
             return newKey;
         }).collect(Collectors.toList());
         repository.saveAll(newKeys);
@@ -53,5 +55,16 @@ public class KeyService {
         }).collect(Collectors.toList());
 
         return repository.saveAll(keyList);
+    }
+
+
+    @Override
+    public void updateChild(Key key) {
+        List<Key> keys = repository.findAllByExtendedAndStatus(key.getId(), BaseModel.STATUS.EXTENDED);
+        if (keys == null) {
+            return;
+        }
+        keys = keys.stream().peek(k -> k.update(key)).collect(Collectors.toList());
+        repository.saveAll(keys);
     }
 }

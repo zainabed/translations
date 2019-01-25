@@ -12,6 +12,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.zainabed.projects.translation.model.BaseModel;
 import org.zainabed.projects.translation.model.Key;
 import org.zainabed.projects.translation.model.Locale;
 import org.zainabed.projects.translation.model.Project;
@@ -28,6 +29,7 @@ public interface KeyRepository extends JpaRepository<Key, Long> {
     Page findAllByProjectsId(@Param("projects") Long projects, Pageable p);
 
     List<Key> findAllByNameInAndProjectsId(@Param("name") Set<String> codes, @Param("projects") Long projects);
+    List<Key> findAllByExtendedAndStatus(@Param("extended") Long extended, @Param("status") BaseModel.STATUS status);
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PO')")
     @Override

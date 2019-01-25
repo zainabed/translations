@@ -147,6 +147,7 @@ public class TranslationService implements ModelService<Translation>{
         return translation.keySet();
     }
 
+    @Override
     public void updateChild(Translation translation) {
         List<Translation> translations = repository.findAllByExtendedAndStatus(translation.getId(), BaseModel.STATUS.EXTENDED);
         if (translations == null) {

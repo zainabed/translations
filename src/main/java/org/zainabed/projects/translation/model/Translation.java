@@ -31,7 +31,7 @@ public class Translation extends BaseModel {
     private String content;
     private Boolean verified;
     private Long extended;
-    private STATUS status;
+
 
     public String getContent() {
         return content;
@@ -86,19 +86,6 @@ public class Translation extends BaseModel {
 
     public void setExtended(Long extended) {
         this.extended = extended;
-    }
-
-    public STATUS getStatus() {
-        return status;
-    }
-
-    public void setStatus(STATUS status) {
-        this.status = status;
-    }
-
-    @PreUpdate
-    public void updateStatus(){
-        this.status = STATUS.UPDATED;
     }
 
     public void update(Translation translation){

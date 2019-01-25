@@ -12,17 +12,16 @@ import org.zainabed.projects.translation.service.TranslationService;
 import javax.persistence.PostUpdate;
 
 @RepositoryEventHandler(Translation.class)
-public class TranslationRepositoryEvent {
+public class TranslationRepositoryEventHandler {
 
 
     @Autowired
     TranslationService translationService;
 
-    Logger logger = LoggerFactory.getLogger(TranslationEvent.class);
+    //Logger logger = LoggerFactory.getLogger(TranslationRepositoryEventHandler.class);
 
     @HandleAfterSave
     public void update(Translation translation) {
-        logger.info("Inside listener");
         translationService.updateChild(translation);
     }
 }
