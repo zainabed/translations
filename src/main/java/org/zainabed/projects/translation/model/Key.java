@@ -19,65 +19,96 @@ import javax.validation.constraints.Size;
 @Table(name = "translation_key")
 public class Key extends BaseModel {
 
-	@NotNull
-	@Size(min = 5, max = 100)
-	@Column(length = 100, nullable = false)
-	private String name;
+    @NotNull
+    @Size(min = 5, max = 100)
+    @Column(length = 100, nullable = false)
+    private String name;
 
-	@NotNull
-	@Size(min = 5, max = 200)
-	@Column(length = 200, nullable = false)
-	private String description;
+    @NotNull
+    @Size(min = 5, max = 200)
+    @Column(length = 200, nullable = false)
+    private String description;
 
-	private Long extended;
+    private Long extended;
 
-	@ManyToOne
-	@JoinColumn(name = "projects_id")
-	private Project projects;
+    @ManyToOne
+    @JoinColumn(name = "projects_id")
+    private Project projects;
 
-	@OneToMany(mappedBy="keys")
-	private List<Translation> translations;
-	
-	
-	
-	public List<Translation> getTranslations() {
-		return translations;
-	}
+    @OneToMany(mappedBy = "keys")
+    private List<Translation> translations;
 
-	public void setTranslations(List<Translation> translations) {
-		this.translations = translations;
-	}
+    public Key() {
 
-	public String getName() {
-		return name;
-	}
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Key(Key key) {
+        this.name = key.getName();
+        this.description = key.getDescription();
+        this.extended = key.getId();
+        this.status = STATUS.EXTENDED;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Key(Key key, Project project) {
+        this(key);
+        this.projects = project;
+    }
 
-	public Project getProjects() {
-		return projects;
-	}
+    public Key(String key, Project project) {
+        name = key;
+        description = key;
+        this.projects = project;
+    }
 
-	public void setProjects(Project projects) {
-		this.projects = projects;
-	}
+    public Key(Key key, Project project, STATUS status) {
+        this(key, project);
+        this.status = status;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
-	public Long getExtended() {
-		return extended;
-	}
+    public List<Translation> getTranslations() {
+        return translations;
+    }
 
-	public void setExtended(Long extended) {
-		this.extended = extended;
-	}
+    public void setTranslations(List<Translation> translations) {
+        this.translations = translations;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Project getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Project projects) {
+        this.projects = projects;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getExtended() {
+        return extended;
+    }
+
+    public void setExtended(Long extended) {
+        this.extended = extended;
+    }
+
+    public void update(Key key) {
+        name = key.getName();
+        description = key.getDescription();
+    }
 
 }

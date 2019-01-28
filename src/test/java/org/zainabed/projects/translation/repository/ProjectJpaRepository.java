@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { Application.class, ApplicationSecurity.class })
 @ActiveProfiles("test")
-public class ProjectJpaRepositoryTest {
+public class ProjectJpaRepository {
 
 	MockMvc mvc;
 
@@ -171,5 +171,5 @@ public class ProjectJpaRepositoryTest {
 		project.setDescription("test description");
 		return project;
 	}
-	
+
 }

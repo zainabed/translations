@@ -10,14 +10,9 @@ import org.hibernate.annotations.Cascade;
 import org.zainabed.projects.translation.model.event.TranslationEvent;
 
 @Entity
-//@EntityListeners(TranslationEvent.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "translation_translation")
 public class Translation extends BaseModel {
-
-    public enum STATUS {EXTENDED, UPDATED}
-
-
 
     @ManyToOne
     @JoinColumn(name = "locales_id")
@@ -32,11 +27,28 @@ public class Translation extends BaseModel {
     private Project projects;
 
     @NotNull
-    @Size(min = 2, max = 500)
+    @Size(min = 1, max = 2500)
     private String content;
     private Boolean verified;
     private Long extended;
-    private STATUS status;
+
+
+    public Translation(){
+
+    }
+
+    public Translation(Translation translation){
+        content = translation.getContent();
+        locales = translation.getLocales();
+        extended = translation.getId();
+        status = STATUS.EXTENDED;
+    }
+
+    public Translation(Translation translation, Key keys){
+        this(translation);
+        projects = keys.getProjects();
+        this.keys = keys;
+    }
 
     public String getContent() {
         return content;
@@ -93,11 +105,7 @@ public class Translation extends BaseModel {
         this.extended = extended;
     }
 
-    public STATUS getStatus() {
-        return status;
-    }
-
-    public void setStatus(STATUS status) {
-        this.status = status;
+    public void update(Translation translation){
+        content = translation.getContent();
     }
 }

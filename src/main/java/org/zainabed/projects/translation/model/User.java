@@ -29,7 +29,7 @@ public class User extends BaseModel {
 
 	@NotNull
 	private String password;
-	private String status;
+
 
 	@ManyToMany
 	private List<Project> projects;
@@ -63,14 +63,6 @@ public class User extends BaseModel {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public List<Project> getProjects() {
