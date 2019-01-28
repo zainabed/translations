@@ -182,13 +182,15 @@ public class TranslationService implements ModelService<Translation> {
             return;
         }
         translations = translations.stream().peek(t -> t.update(translation)).collect(Collectors.toList());
-        repository.saveAll(translations);
+        translations = repository.saveAll(translations);
+        translations.stream().peek(this::updateChild).count();
     }
 
     @Override
     public void addChild(Translation translation) {
         List<Key> keys = keyService.getRepository().findAllByExtended(translation.getKeys().getId());
         List<Translation> translations = keys.stream().map(k -> new Translation(translation, k)).collect(Collectors.toList());
-        repository.saveAll(translations);
+        translations = repository.saveAll(translations);
+        translations.stream().peek(this::addChild).count();
     }
 }
