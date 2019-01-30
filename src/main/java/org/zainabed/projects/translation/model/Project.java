@@ -119,7 +119,7 @@ public class Project extends BaseModel {
         this.extended = extended;
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object p) {
         boolean result = false;
 
@@ -128,5 +128,5 @@ public class Project extends BaseModel {
             result = project.id.equals(this.id);
         }
         return result;
-    }
+    }*/
 }

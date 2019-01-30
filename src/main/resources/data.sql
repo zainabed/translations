@@ -8,9 +8,9 @@ INSERT INTO translation_locale (id, name, code ) VALUES
   (22324, 'Finnish', 'fi'),
   (22325, 'Danish', 'da'),
   (22326, 'Norwegian', 'nb');
-  
-  
-INSERT INTO project_locales(project_id, locale_id) VALUES 
+
+
+INSERT INTO project_locales(project_id, locale_id) VALUES
 (134545,54533),
 (134545,22323);
 
@@ -24,7 +24,7 @@ INSERT INTO translation_key (id, name, description , projects_id) VALUES
   (7, 'login.instruction', 'Login instruction' , 134545),
   (8, 'login.instruction.option.one', 'Login instruction option one' , 134545),
   (9, 'login.instruction.option.two', 'Login instruction option two' , 134545);
-  
+
 INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_id) VALUES
     (1, 'Nordea Brand', 134545, 54533, 1),
     (2, 'English', 134545, 54533, 2),
@@ -45,21 +45,21 @@ INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_
     (17, 'Logga in.', 134545, 22323, 8),
     (18, 'Har du tillgång till Nordea Business hamnar du direkt inne i tjänsten. Du kan använda Internetbanken Företag genom att klicka på Internetbanken Företag under Övriga tjänster.', 134545, 22323, 9);
 
-INSERT INTO translation_user(id, username, password, email) VALUES 
+INSERT INTO translation_user(id, username, password, email) VALUES
 (1, 'admin', '1234', 'admin@test.org'),
 (2, 'testuser', '1234', 'testuser@test.org'),
 (3, 'testsupport', '1234', 'testsupport@test.org'),
 (4, 'testtranslator', '1234', 'testtranslator@test.org'),
 (5, 'testpo', '1234', 'testpo@test.org');
 
-INSERT INTO role(id,name) VALUES 
+INSERT INTO role(id,name) VALUES
 (1, 'ROLE_ADMIN'),
 (2, 'ROLE_USER'),
 (3, 'ROLE_SUPPOIRT'),
 (4, 'ROLE_TRANSLATOR'),
 (5, 'ROLE_PO');
 
-INSERT INTO user_roles(user_id, role_id) VALUES 
+INSERT INTO user_roles(user_id, role_id) VALUES
 (1, 1),
 (1, 2),
 (2, 2),

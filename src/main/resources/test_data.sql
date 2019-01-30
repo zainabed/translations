@@ -1,3 +1,17 @@
+INSERT INTO translation_user(id, username, password, email) VALUES
+ (1, 'test', '123', 'admin@test.org');
+
+INSERT INTO role(id,name) VALUES
+ (100, 'ROLE_ADMIN'),
+(200, 'ROLE_USER'),
+(300, 'ROLE_SUPPOIRT'),
+(400, 'ROLE_TRANSLATOR'),
+(500, 'ROLE_PO');
+
+INSERT INTO user_roles(user_id, role_id) VALUES
+ (1, 100),
+(1, 200);
+
 INSERT INTO translation_project (id, name, description) VALUES
   (1, 'Test Project', 'Test Project Description.'),
   (2, 'Test Project', 'Test Project for get test.'),
@@ -15,14 +29,3 @@ INSERT INTO project_locales(project_id, locale_id) VALUES
 (4,1);
 
 
-INSERT INTO translation_key (id, name, description , projects_id) VALUES
-  (1, 'test.title', 'test title' , 1 ),
-  (2, 'test.subtitle', 'test subtitle', 1 ),
-  (3, 'test.title', 'title' , 2 ),
-  (4, 'test.title', 'title' , 4);
-
-INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_id) VALUES
-    (1, 'Test Title', 1, 1, 1),
-    (2, 'Test Subtitle', 1, 1, 2),
-    (3, 'Test test', 2, 1, 3 ),
-    (4, 'Test test', 4, 1, 4);

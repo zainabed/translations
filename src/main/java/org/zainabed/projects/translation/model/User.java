@@ -19,12 +19,12 @@ import javax.validation.constraints.Size;
 public class User extends BaseModel {
 
 	@NotNull
-	@Size(min = 5, max = 20)
+	@Size(min = 3, max = 20)
 	private String username;
 
 	@NotNull
 	@Email
-	@Size(min = 5, max = 30)
+	@Size(min = 3, max = 30)
 	private String email;
 
 	@NotNull

@@ -5,16 +5,18 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,7 +30,8 @@ import com.zainabed.spring.security.jwt.entity.AuthenticationToken;
 import com.zainabed.spring.security.jwt.service.AuthorizationHeaderService;
 import com.zainabed.spring.security.jwt.service.JwtTokenService;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+@ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
 // @AutoConfigureMockMvc
@@ -41,8 +44,7 @@ public class UserJpaRepositoryTest {
 	@Autowired
 	private UserJpaRepository repository;
 
-	@Rule
-	public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
+
 
 	@Autowired
 	JwtTokenService tokenService;
@@ -51,10 +53,10 @@ public class UserJpaRepositoryTest {
 	Gson gson = new Gson();
 	AuthenticationToken token;
 
-	@Before
-	public void loadModel() {
+	/*@BeforeEach
+	public void loadModel(RestDocumentationExtension restDocumentation) {
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context)
-				.apply(documentationConfiguration(this.restDocumentation)).build();
+				.apply(documentationConfiguration(restDocumentation)).build();
 
 		user = new User();
 		user.setUsername("testuser");
@@ -66,7 +68,7 @@ public class UserJpaRepositoryTest {
 		token = tokenService.getToken(userEntity);
 	}
 
-	@After
+	@AfterEach
 	public void releaseModel() {
 		user = null;
 		repository.deleteAll();
@@ -136,7 +138,7 @@ public class UserJpaRepositoryTest {
 		user.setPassword(null);
 		mvc.perform(post("/users").content(gson.toJson(user)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is4xxClientError());
-	}
+	}*/
 
 	// End of Unit test for User constraint violations
 

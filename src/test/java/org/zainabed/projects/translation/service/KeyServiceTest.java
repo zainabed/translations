@@ -1,12 +1,14 @@
 package org.zainabed.projects.translation.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.zainabed.projects.translation.model.Key;
 import org.zainabed.projects.translation.repository.KeyRepository;
@@ -16,9 +18,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
+
+@ExtendWith(SpringExtension.class)
 public class KeyServiceTest {
 
     @Autowired
@@ -26,6 +29,9 @@ public class KeyServiceTest {
 
     @MockBean
     KeyRepository repository;
+
+    @MockBean
+    ProjectService projectService;
 
     @Configuration
     @Import(KeyService.class)
@@ -35,7 +41,7 @@ public class KeyServiceTest {
     List<Key> keys;
     List<String> keyNames;
 
-    @Before
+    @BeforeEach
     public void setup() {
         keyNames = Stream.of("test1", "test2", "test3").collect(Collectors.toList());
         keys = keyNames.stream().map(k -> {

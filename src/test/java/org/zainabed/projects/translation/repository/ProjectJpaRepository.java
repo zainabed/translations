@@ -8,17 +8,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -41,7 +44,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+@ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest(classes = { Application.class, ApplicationSecurity.class })
 @ActiveProfiles("test")
 public class ProjectJpaRepository {
@@ -50,9 +54,6 @@ public class ProjectJpaRepository {
 
 	@Autowired
 	WebApplicationContext context;
-
-	@Rule
-	public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
 
 	@Autowired
 	JwtTokenService tokenService;
@@ -70,8 +71,8 @@ public class ProjectJpaRepository {
 
 	Project project;
 
-	@Before
-	public void setup() {
+	@BeforeEach
+	public void setup(RestDocumentationExtension restDocumentation) {
 		mvc = MockMvcBuilders.webAppContextSetup(context).addFilters(this.springSecurityFilterChain)
 				.apply(documentationConfiguration(restDocumentation)).build();
 

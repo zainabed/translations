@@ -1,13 +1,15 @@
 package org.zainabed.projects.translation.model;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class UserTest extends TestModelConfig<User> {
 
 	@Override
-	@Before
+	@BeforeEach
 	public void loadModel() {
 		model = new User();
 		model.setUsername("zainabed");
@@ -17,7 +19,7 @@ public class UserTest extends TestModelConfig<User> {
 	}
 
 	@Override
-	@After
+	@AfterEach
 	public void releaseModel() {
 		model = null;
 	}
@@ -29,8 +31,8 @@ public class UserTest extends TestModelConfig<User> {
 	}
 
 	@Test
-	public void shouldFailCauseUsernameLengthIsLessThan5() {
-		model.setUsername("abcd");
+	public void shouldFailCauseUsernameLengthIsLessThan3() {
+		model.setUsername("ab");
 		validateModelForConstraints(1);
 	}
 
@@ -47,8 +49,8 @@ public class UserTest extends TestModelConfig<User> {
 	}
 	
 	@Test
-	public void shouldFailCauseEmailLengthIsLessThan5() {
-		model.setEmail("abcd");
+	public void shouldFailCauseEmailLengthIsLessThan3() {
+		model.setEmail("ab");
 		validateModelForConstraints(2);
 	}
 
