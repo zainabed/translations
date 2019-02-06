@@ -14,7 +14,10 @@ public class ApplicationSecurity extends JwtWebSecuriy {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users").permitAll();
+                .antMatchers("/users").permitAll()
+                .antMatchers("/static/**").permitAll()
+                .antMatchers("/translations/data/export/**").permitAll();
+       
         super.configure(http);
 
     }

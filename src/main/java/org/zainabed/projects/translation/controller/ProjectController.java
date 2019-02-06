@@ -4,6 +4,8 @@ import org.hibernate.mapping.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.zainabed.projects.translation.export.TranslationExporter;
+import org.zainabed.projects.translation.export.TranslationExporterFactory;
 import org.zainabed.projects.translation.model.*;
 import org.zainabed.projects.translation.repository.LocaleRepository;
 import org.zainabed.projects.translation.repository.ProjectRepository;
@@ -53,15 +55,14 @@ public class ProjectController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping(path = "/{id}/locales/{localeId}/download")
-    public Map<String, String> download(@PathVariable("id") Long projectId, @PathVariable("localeId") Long localeId) {
+    @GetMapping(path = "/{id}/locales/{localeId}/export/{type}")
+    public String export(@PathVariable("id") Long projectId, 
+    		@PathVariable("localeId") Long localeId, 
+    		@PathVariable("type") String type) {
+    	Locale locale = localeRepository.getOne(localeId);
         List<Translation> translations = translationRepository.findAllByLocalesIdAndProjectsId(localeId, projectId);
-        return translations.stream().map(t -> {
-            MapValue mapValue = new MapValue();
-            mapValue.setKey(t.getKeys().getName());
-            mapValue.setValue(t.getContent());
-            return mapValue;
-        }).collect(Collectors.toMap(MapValue::getKey, MapValue::getValue));
+        TranslationExporter translationExporter = TranslationExporterFactory.get(type);
+        return translationExporter.export(translations, locale.getCode());
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
