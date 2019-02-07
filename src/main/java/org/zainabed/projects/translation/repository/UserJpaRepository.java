@@ -7,17 +7,17 @@ import org.springframework.stereotype.Component;
 import org.zainabed.projects.translation.model.User;
 
 
-@RepositoryRestResource(path="users")
+//@RepositoryRestResource(path="users")
 @PreAuthorize("permitAll()")
 public interface UserJpaRepository extends JpaRepository<User, Long> {
 	public User findByUsername(String username);
 	public User findByUsernameAndPassword(String username, String password);
 
-	@PreAuthorize("permitAll()")
+	/*@PreAuthorize("permitAll()")
 	@Override
 	User save(User entity);
 
 	@PreAuthorize("permitAll()")
 	@Override
-	User saveAndFlush(User entity);
+	User saveAndFlush(User entity);*/
 }

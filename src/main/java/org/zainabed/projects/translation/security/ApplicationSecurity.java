@@ -16,7 +16,7 @@ public class ApplicationSecurity extends JwtWebSecuriy {
         http.authorizeRequests()
                 .antMatchers("/users").permitAll()
                 .antMatchers("/static/**").permitAll()
-                .antMatchers("/translations/data/export/**").permitAll();
+                .antMatchers("/translations/export/**").permitAll();
        
         super.configure(http);
 

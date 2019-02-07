@@ -4,6 +4,13 @@ public class MapValue {
     String key;
     String value;
 
+    public MapValue(){
+
+    }
+    public MapValue(Translation translation){
+        key = translation.getKeys().getName();
+        value = translation.getContent();
+    }
     public String getKey() {
         return key;
     }

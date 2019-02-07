@@ -12,60 +12,47 @@ import java.util.UUID;
 import org.zainabed.projects.translation.model.Translation;
 
 /**
- * 
  * @author zain
- *
  */
 public class PropertyTranslationExporter extends AbstractTranslationExporter {
 
-	List<Translation> translaions;
-	private Path fileStorageLocation;
-	String extension = ".properties";
-	String filePrefix = "messages_";
-	String exportFolder = null;
+    List<Translation> translaions;
 
-	public PropertyTranslationExporter() {
-		exportFolder = "./export/" + UUID.randomUUID().toString();
-		this.fileStorageLocation = Paths.get(exportFolder).toAbsolutePath().normalize();
-		try {
-			Files.createDirectories(this.fileStorageLocation);
-		} catch (Exception ex) {
-			throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
-		}
-	}
+    String exportFolder = null;
 
-	/**
-	 * 
-	 */
-	@Override
-	public void build(List<Translation> translations) {
-		this.translaions = translations;
-	}
+    public PropertyTranslationExporter() {
+        super();
+        this.fileNamePrefix = "messages_";
+        this.fileExtension = ".properties";
+    }
 
-	/**
-	 * 
-	 */
-	@Override
-	public String save(String fileName) {
-		Path exportFile = null;
-		String absoluteFilePath = null;
-		try {
-			fileName = filePrefix + fileName + extension;
-			Path targetpath = fileStorageLocation.resolve(fileName);
-			absoluteFilePath = targetpath.normalize().toString();
-			exportFile = Paths.get("./export").toAbsolutePath().relativize(targetpath);
-			PrintWriter pw = new PrintWriter(new FileOutputStream(absoluteFilePath));
-			translaions.forEach(t -> {
-				pw.println(t.getKeys().getName() + "=" + t.getContent());
-			});
+    /**
+     *
+     */
+    @Override
+    public void build(List<Translation> translations) {
+        this.translaions = translations;
+    }
 
-			pw.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String path = exportFile.toUri().toString();
-		return path.substring(path.indexOf("export"));
-	}
+    /**
+     *
+     */
+    @Override
+    public String save(String name) {
+        String filePath = null;
+        try {
+            filePath = getFilePath(name);
+            PrintWriter pw = new PrintWriter(new FileOutputStream(filePath));
+            translaions.forEach(t -> {
+                pw.println(t.getKeys().getName() + "=" + t.getContent());
+            });
+
+            pw.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return getFileUri();
+    }
 
 }

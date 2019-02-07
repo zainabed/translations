@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.*;
 
 import org.hibernate.annotations.Cascade;
 import org.zainabed.projects.translation.model.event.TranslationEvent;
@@ -12,6 +13,7 @@ import org.zainabed.projects.translation.model.event.TranslationEvent;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "translation_translation")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Translation extends BaseModel {
 
     @ManyToOne
@@ -50,6 +52,7 @@ public class Translation extends BaseModel {
         this.keys = keys;
     }
 
+    @XmlElement(name = "value")
     public String getContent() {
         return content;
     }
@@ -88,6 +91,11 @@ public class Translation extends BaseModel {
 
     public void setKeys(Key keys) {
         this.keys = keys;
+    }
+
+    @XmlAttribute(name = "name")
+    public String getKeyName(){
+        return getKeys().getName();
     }
 
     public static Translation factoryObject(Translation translation) {

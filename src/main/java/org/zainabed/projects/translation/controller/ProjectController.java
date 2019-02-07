@@ -13,6 +13,7 @@ import org.zainabed.projects.translation.repository.TranslationRepository;
 import org.zainabed.projects.translation.service.ProjectService;
 import org.zainabed.projects.translation.service.TranslationService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,13 +57,15 @@ public class ProjectController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(path = "/{id}/locales/{localeId}/export/{type}")
-    public String export(@PathVariable("id") Long projectId, 
-    		@PathVariable("localeId") Long localeId, 
-    		@PathVariable("type") String type) {
-    	Locale locale = localeRepository.getOne(localeId);
+    public String export(@PathVariable("id") Long projectId,
+                         @PathVariable("localeId") Long localeId,
+                         @PathVariable("type") String type,
+                         HttpServletRequest request) {
+        Locale locale = localeRepository.getOne(localeId);
         List<Translation> translations = translationRepository.findAllByLocalesIdAndProjectsId(localeId, projectId);
         TranslationExporter translationExporter = TranslationExporterFactory.get(type);
-        return translationExporter.export(translations, locale.getCode());
+        String exportPath = getHostUri(request, "/projects") + translationExporter.export(translations, locale.getCode());
+        return exportPath;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -73,8 +76,17 @@ public class ProjectController {
 
 
     @PostMapping(path = "/{projectId}/locales/{localeId}/import/uri")
-    public void importURI(@PathVariable("projectId") Long projectId, @PathVariable("localeId") Long localeId, @RequestBody TranslationUri translationUri) {
+    public void importURI(@PathVariable("projectId") Long projectId,
+                          @PathVariable("localeId") Long localeId,
+                          @RequestBody TranslationUri translationUri
+    ) {
         translationService.importTranslationFromURI(translationUri, projectId, localeId);
     }
+
+    String getHostUri(HttpServletRequest request, String path) {
+        String requestPath = request.getRequestURL().toString();
+        return requestPath.substring(0, requestPath.indexOf(path)) + "/";
+    }
+
 
 }

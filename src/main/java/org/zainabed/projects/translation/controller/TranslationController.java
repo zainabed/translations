@@ -43,11 +43,12 @@ public class TranslationController {
         translationService.updateChild(translation);
         return saveTranslation;
     }
-    
+
+
     @GetMapping("/export/{tempFolder}/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable("tempFolder") String tempFolder, @PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
-    	Path filePath = Paths.get("./export/" + tempFolder + "/" + fileName);
+    	Path filePath = Paths.get("./translations/export/" + tempFolder + "/" + fileName);
         Resource resource = null;
 		try {
 			resource = new UrlResource(filePath.toUri());

@@ -23,4 +23,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+/export/
+/translations/
 derby.log
+
