@@ -56,7 +56,7 @@ public class ProjectController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping(path = "/{id}/locales/{localeId}/export/{type}")
+    @GetMapping(path = "/{id}/locales/{localeId}/export/{type}", produces={"text/plain"})
     public String export(@PathVariable("id") Long projectId,
                          @PathVariable("localeId") Long localeId,
                          @PathVariable("type") String type,

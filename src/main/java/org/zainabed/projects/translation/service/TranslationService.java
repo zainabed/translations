@@ -75,16 +75,28 @@ public class TranslationService implements ModelService<Translation> {
      * @return
      */
     public List<Translation> importTranslationFromURI(TranslationUri translationUri, Long projectId, Long localeId) {
+        // Fetch translation from URI
+        Map<String, String> remoteTranslations = getTranslationFromURI(translationUri);
+        return storeTranslations(remoteTranslations, projectId, localeId);
+    }
+
+    /**
+     *
+     * @param translations
+     * @param projectId
+     * @param localeId
+     * @return
+     */
+    public List<Translation> storeTranslations(Map<String, String> translations, Long projectId, Long localeId) {
         Locale locale = localeService.getRepository().getOne(localeId);
         Project project = projectService.getRepository().getOne(projectId);
         List<Translation> result = null;
+
         try {
 
-            // Fetch translation from URI
-            Map<String, String> remoteTranslations = getTranslationFromURI(translationUri);
 
             // Convert translation into key array
-            Set<String> newKeyList = getKeyList(remoteTranslations);
+            Set<String> newKeyList = getKeyList(translations);
 
             // fetch keys exist in db
             List<Key> existingKeys = keyService.getRepository().findAllByNameInAndProjectsId(newKeyList, projectId);
@@ -101,14 +113,14 @@ public class TranslationService implements ModelService<Translation> {
             existingKeys = existingKeys.stream().filter(k -> existingKeyList.contains(k.getName())).collect(Collectors.toList());
 
             // Add translation for existing keys
-            List<Translation> existingKeyTranslations = createTranslationsForKeys(existingKeys, remoteTranslations, project, locale);
+            List<Translation> existingKeyTranslations = createTranslationsForKeys(existingKeys, translations, project, locale);
 
             // Modify translation according to imported translation
-            List<Translation> updatedTranslations = updateTranslationForRemoteTranslation(existingTranslations, remoteTranslations);
+            List<Translation> updatedTranslations = updateTranslationForRemoteTranslation(existingTranslations, translations);
 
             // Generate new translations
             List<Key> remoteKeys = keyService.createNewKeysFromList(newKeyList, project);
-            List<Translation> newTranslations = createTranslationsForKeys(remoteKeys, remoteTranslations, project, locale);
+            List<Translation> newTranslations = createTranslationsForKeys(remoteKeys, translations, project, locale);
 
             if (newTranslations == null) {
                 newTranslations = new ArrayList<>();
