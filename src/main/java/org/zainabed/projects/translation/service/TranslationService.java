@@ -1,32 +1,29 @@
 package org.zainabed.projects.translation.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.zainabed.projects.translation.model.*;
+import org.zainabed.projects.translation.model.BaseModel;
+import org.zainabed.projects.translation.model.Key;
 import org.zainabed.projects.translation.model.Locale;
-import org.zainabed.projects.translation.repository.KeyRepository;
-import org.zainabed.projects.translation.repository.ProjectRepository;
+import org.zainabed.projects.translation.model.Project;
+import org.zainabed.projects.translation.model.Translation;
+import org.zainabed.projects.translation.model.TranslationUri;
 import org.zainabed.projects.translation.repository.TranslationRepository;
-
-
-import java.io.StringReader;
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Component
 public class TranslationService implements ModelService<Translation> {
+	
+	Logger logger = Logger.getLogger(TranslationService.class.getName());
 
     @Autowired
     private TranslationRepository repository;
@@ -91,12 +88,12 @@ public class TranslationService implements ModelService<Translation> {
         Locale locale = localeService.getRepository().getOne(localeId);
         Project project = projectService.getRepository().getOne(projectId);
         List<Translation> result = null;
-
+        logger.info(translations.toString());
         try {
 
 
             // Convert translation into key array
-            Set<String> newKeyList = getKeyList(translations);
+            Set<String> newKeyList = new HashSet<String>(getKeyList(translations));
 
             // fetch keys exist in db
             List<Key> existingKeys = keyService.getRepository().findAllByNameInAndProjectsId(newKeyList, projectId);
@@ -129,6 +126,7 @@ public class TranslationService implements ModelService<Translation> {
             // Merge all translations
             newTranslations.addAll(updatedTranslations);
             newTranslations.addAll(existingKeyTranslations);
+            logger.info(translations.toString());
             result = repository.saveAll(newTranslations);
         } catch (Exception e) {
             log.info(e.getLocalizedMessage());
@@ -155,11 +153,13 @@ public class TranslationService implements ModelService<Translation> {
      * @param locale
      * @return
      */
-    public List<Translation> createTranslationsForKeys(List<Key> remoteKeys, Map<String, String> remoteTranslations, Project project, Locale locale) {
+    public List<Translation> createTranslationsForKeys(List<Key> keys, Map<String, String> translations, Project project, Locale locale) {
 
-        return remoteKeys.stream().map(k -> {
+        return keys.stream().map(k -> {
             Translation translation = new Translation();
-            translation.setContent(remoteTranslations.get(k.getName()));
+            logger.info(k.getName());
+            logger.info("translation =" + translations.get(k.getName()));
+            translation.setContent(translations.get(k.getName()));
             translation.setKeys(k);
             translation.setProjects(project);
             translation.setLocales(locale);

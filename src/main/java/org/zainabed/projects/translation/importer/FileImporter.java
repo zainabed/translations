@@ -10,5 +10,5 @@ public interface FileImporter {
 
     Map<String, String> build(String fileName);
 
-    void storeTranslation();
+    
 }

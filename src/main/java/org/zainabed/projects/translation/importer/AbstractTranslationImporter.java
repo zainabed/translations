@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class AbstractTranslationImporter implements FileImporter, TranslationImporter {
 
@@ -21,7 +22,13 @@ public abstract class AbstractTranslationImporter implements FileImporter, Trans
 
     public AbstractTranslationImporter() {
         importLocation = "translations/import";
-        importPath = Paths.get("./" + importLocation + "/").toAbsolutePath();
+        String folderPath = "./" + importLocation + "/" + UUID.randomUUID().toString();
+        importPath = Paths.get(folderPath).toAbsolutePath().normalize();
+        try {
+            Files.createDirectories(importPath);
+        } catch (Exception ex) {
+            throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
+        }
     }
 
     @Override
