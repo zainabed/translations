@@ -35,14 +35,14 @@ public class TranslationController {
 
     Logger logger = LoggerFactory.getLogger(TranslationController.class);
 
-    @PutMapping(path = "/{id}")
+    /*@PutMapping(path = "/{id}")
     public Translation put(@Valid @RequestBody Translation translation) {
         logger.info("Inside Translation controller");
         translation.setStatus(Translation.STATUS.UPDATED);
         Translation saveTranslation = translationService.getRepository().save(translation);
         translationService.updateChild(translation);
         return saveTranslation;
-    }
+    }*/
 
 
     @GetMapping("/export/{tempFolder}/{fileName:.+}")

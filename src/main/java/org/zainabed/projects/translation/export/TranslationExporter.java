@@ -5,16 +5,24 @@ import java.util.List;
 import org.zainabed.projects.translation.model.Translation;
 
 /**
- * 
- * @author zain
+ * <p>This is an entity exporter interface design to export {@link Translation} entities.
+ * It is an abstraction for application allowing to export translations into different set
+ * of formats.</p>
  *
+ * <p>It is not applications concern to retrieve right export implementation rather
+ * should provide given inputs as {@link List} of {@link Translation} objects and expect
+ * export file URI from this interface.</p>
+ *
+ * @author Zainul Shaikh
  */
 public interface TranslationExporter {
 
-	/**
-	 * 
-	 * @param models
-	 * @return
-	 */
-	String export(List<Translation> models, String fileName);
+    /**
+     * Method should export {@link Translation} objects into file system persist inside
+     * application and return file locations as URI for given file name.
+     *
+     * @param translations List of {@link Translation} objects
+     * @return Saved file Uri
+     */
+    String export(List<Translation> translations, String fileName);
 }
