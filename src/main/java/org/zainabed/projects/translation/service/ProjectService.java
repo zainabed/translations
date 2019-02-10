@@ -1,48 +1,52 @@
 package org.zainabed.projects.translation.service;
 
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.zainabed.projects.translation.model.Locale;
 import org.zainabed.projects.translation.model.Project;
 import org.zainabed.projects.translation.repository.ProjectRepository;
 
-import java.util.Optional;
-
 @Component
-public class ProjectService {
+public class ProjectService implements ServiceComponent<Long> {
 
-    @Autowired
-    private ProjectRepository repository;
+	@Autowired
+	private ProjectRepository repository;
 
-    public ProjectRepository getRepository() {
-        return repository;
-    }
+	@Autowired
+	KeyService keyService;
 
-    @Autowired
-    KeyService keyService;
+	@Autowired
+	TranslationService translationService;
 
-    @Autowired
-    TranslationService translationService;
+	@Autowired
+	LocaleService localeService;
 
-    @Autowired
-    LocaleService localeService;
+	public ProjectRepository getRepository() {
+		return repository;
+	}
 
-    public void extendProject(Long projectId, Long extendProjectId) {
-        Project project = repository.getOne(projectId);
-        Project extendProject = repository.getOne(extendProjectId);
+	@Override
+	public void extend(Long childProjectId, Long parentProjectId) {
+		Project project = repository.getOne(childProjectId);
+		Project extendProject = repository.getOne(parentProjectId);
 
-        if (project != null && extendProject != null) {
-            project.setExtended(extendProject.getId());
-            project = repository.save(project);
+		if (project != null && extendProject != null) {
+			project.setExtended(extendProject.getId());
+			repository.save(project);
+		}
+	}
 
-            // Extend locales
-            localeService.extendLocalesFor(project, extendProject);
+	public void deleteOneByLocaleId(Long projectId, Long localeId) {
+		Project project = repository.getOne(projectId);
+		Locale locale = localeService.getRepository().getOne(localeId);
+		project.getLocales().remove(locale);
+		repository.save(project);
+	}
 
-            // Extend Keys
-            keyService.extendKeysForProjects(project, extendProjectId);
-
-            // Extend translations
-            translationService.extendTranslationsFor(project, extendProjectId);
-        }
-    }
+	public void addLocaleToProject(Long localeId, Long projectId) {
+		Project project = repository.getOne(projectId);
+		Locale locale = localeService.getRepository().getOne(localeId);
+		project.getLocales().add(locale);
+		repository.save(project);
+	}
 }

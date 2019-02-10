@@ -21,188 +21,177 @@ import org.zainabed.projects.translation.model.TranslationUri;
 import org.zainabed.projects.translation.repository.TranslationRepository;
 
 @Component
-public class TranslationService implements ModelService<Translation> {
-	
+public class TranslationService implements ServiceComponent<Long>, ModelService<Translation> {
+
 	Logger logger = Logger.getLogger(TranslationService.class.getName());
 
-    @Autowired
-    private TranslationRepository repository;
+	@Autowired
+	private TranslationRepository repository;
 
-    @Autowired
-    KeyService keyService;
+	@Autowired
+	KeyService keyService;
 
-    @Autowired
-    ProjectService projectService;
+	@Autowired
+	ProjectService projectService;
 
-    @Autowired
-    LocaleService localeService;
+	@Autowired
+	LocaleService localeService;
 
-    Logger log = Logger.getLogger(TranslationService.class.getName());
+	Logger log = Logger.getLogger(TranslationService.class.getName());
 
-    public TranslationRepository getRepository() {
-        return repository;
-    }
+	public TranslationRepository getRepository() {
+		return repository;
+	}
 
-    /**
-     * @param project
-     * @param extendProjectId
-     */
-    public void extendTranslationsFor(Project project, Long extendProjectId) {
-        List<Translation> translations = repository.findAllByProjectsId(extendProjectId);
-        List<Key> keys = keyService.getRepository().findAllByProjectsId(project.getId());
-        Map<Long, Key> keyMap = keys.stream().collect(Collectors.toMap(Key::getExtended, k -> k));
-        List<Translation> newTranslations = translations.stream().map(t -> {
-            Translation n = new Translation();
-            n.setContent(t.getContent());
-            n.setLocales(t.getLocales());
-            n.setKeys(keyMap.get(t.getKeys().getId()));
-            n.setProjects(project);
-            n.setExtended(t.getId());
-            n.setStatus(Translation.STATUS.EXTENDED);
-            return n;
-        }).collect(Collectors.toList());
+	/**
+	 * @param translationUri
+	 * @param projectId
+	 * @param localeId
+	 * @return
+	 */
+	public List<Translation> importTranslationFromURI(TranslationUri translationUri, Long projectId, Long localeId) {
+		// Fetch translation from URI
+		Map<String, String> remoteTranslations = getTranslationFromURI(translationUri);
+		return save(remoteTranslations, projectId, localeId);
+	}
 
-        repository.saveAll(newTranslations);
-    }
+	/**
+	 *
+	 * @param translations
+	 * @param projectId
+	 * @param localeId
+	 * @return
+	 */
+	public List<Translation> save(Map<String, String> translations, Long projectId, Long localeId) {
+		Locale locale = localeService.getRepository().getOne(localeId);
+		Project project = projectService.getRepository().getOne(projectId);
+		List<Translation> result = null;
+		logger.info(translations.toString());
+		try {
 
-    /**
-     * @param translationUri
-     * @param projectId
-     * @param localeId
-     * @return
-     */
-    public List<Translation> importTranslationFromURI(TranslationUri translationUri, Long projectId, Long localeId) {
-        // Fetch translation from URI
-        Map<String, String> remoteTranslations = getTranslationFromURI(translationUri);
-        return storeTranslations(remoteTranslations, projectId, localeId);
-    }
+			// Convert translation into key array
+			Set<String> newKeyList = new HashSet<String>(getKeyList(translations));
 
-    /**
-     *
-     * @param translations
-     * @param projectId
-     * @param localeId
-     * @return
-     */
-    public List<Translation> storeTranslations(Map<String, String> translations, Long projectId, Long localeId) {
-        Locale locale = localeService.getRepository().getOne(localeId);
-        Project project = projectService.getRepository().getOne(projectId);
-        List<Translation> result = null;
-        logger.info(translations.toString());
-        try {
+			// fetch keys exist in database
+			List<Key> existingKeys = keyService.getRepository().findAllByNameInAndProjectsId(newKeyList, projectId);
+			List<String> existingKeyList = keyService.getKeyNames(existingKeys);
 
+			// Separate out new keys
+			newKeyList.removeAll(existingKeyList);
 
-            // Convert translation into key array
-            Set<String> newKeyList = new HashSet<String>(getKeyList(translations));
+			// Find all translation for existing keys
+			List<Translation> existingTranslations = repository.findAllByKeysInAndProjectsIdAndLocalesId(existingKeys,
+					projectId, localeId);
+			List<Key> existingTranslationKeys = keyService.getKeys(existingTranslations);
+			List<String> existingTranslationKeyList = keyService.getKeyNames(existingTranslationKeys);
 
-            // fetch keys exist in db
-            List<Key> existingKeys = keyService.getRepository().findAllByNameInAndProjectsId(newKeyList, projectId);
-            List<String> existingKeyList = keyService.getKeyStringList(existingKeys);
+			existingKeyList.removeAll(existingTranslationKeyList);
+			existingKeys = existingKeys.stream().filter(k -> existingKeyList.contains(k.getName()))
+					.collect(Collectors.toList());
 
-            // Separate out new keys
-            newKeyList.removeAll(existingKeyList);
+			// Add translation for existing keys
+			List<Translation> existingKeyTranslations = getTranslations(existingKeys, translations, locale);
 
-            // Find all translation for existing keys
-            List<Translation> existingTranslations = repository.findAllByKeysInAndProjectsIdAndLocalesId(existingKeys, projectId, localeId);
-            List<Key> existingTranslationKeys = keyService.getKeyListFromTranslations(existingTranslations);
-            List<String> existingTranslationKeyList = keyService.getKeyStringList(existingTranslationKeys);
-            existingKeyList.removeAll(existingTranslationKeyList);
-            existingKeys = existingKeys.stream().filter(k -> existingKeyList.contains(k.getName())).collect(Collectors.toList());
+			// Modify translation according to imported translation
+			List<Translation> updatedTranslations = update(existingTranslations, translations);
 
-            // Add translation for existing keys
-            List<Translation> existingKeyTranslations = createTranslationsForKeys(existingKeys, translations, project, locale);
+			// Generate new translations
+			List<Key> newKeys = keyService.saveAll(newKeyList, project);
+			List<Translation> newTranslations = getTranslations(newKeys, translations, locale);
 
-            // Modify translation according to imported translation
-            List<Translation> updatedTranslations = updateTranslationForRemoteTranslation(existingTranslations, translations);
+			if (newTranslations == null) {
+				newTranslations = new ArrayList<>();
+			}
 
-            // Generate new translations
-            List<Key> remoteKeys = keyService.createNewKeysFromList(newKeyList, project);
-            List<Translation> newTranslations = createTranslationsForKeys(remoteKeys, translations, project, locale);
+			// Merge all translations
+			newTranslations.addAll(updatedTranslations);
+			newTranslations.addAll(existingKeyTranslations);
+			logger.info(translations.toString());
+			result = repository.saveAll(newTranslations);
+		} catch (Exception e) {
+			log.info(e.getLocalizedMessage());
+		}
 
-            if (newTranslations == null) {
-                newTranslations = new ArrayList<>();
-            }
+		return result;
+	}
 
-            // Merge all translations
-            newTranslations.addAll(updatedTranslations);
-            newTranslations.addAll(existingKeyTranslations);
-            logger.info(translations.toString());
-            result = repository.saveAll(newTranslations);
-        } catch (Exception e) {
-            log.info(e.getLocalizedMessage());
-        }
+	/**
+	 * 
+	 * @param existingTranslations
+	 * @param translations
+	 * @return
+	 */
+	public List<Translation> update(List<Translation> existingTranslations, Map<String, String> translations) {
+		return existingTranslations.stream().peek(t -> t.setContent(translations)).collect(Collectors.toList());
+	}
 
-        return result;
-    }
+	/**
+	 * 
+	 * @param keys
+	 * @param translations
+	 * @param locale
+	 * @return
+	 */
+	public List<Translation> getTranslations(List<Key> keys, Map<String, String> translations, Locale locale) {
+		return keys.stream().map(Translation::new).peek(t -> t.update(translations, locale))
+				.collect(Collectors.toList());
+	}
 
-    /**
-     * @param translations
-     * @param remoteTranslations
-     * @return
-     */
-    public List<Translation> updateTranslationForRemoteTranslation(List<Translation> translations, Map<String, String> remoteTranslations) {
-        return translations.stream().peek(t -> {
-            t.setContent(remoteTranslations.get(t.getKeys().getName()));
-        }).collect(Collectors.toList());
-    }
+	/**
+	 * @param translation
+	 */
+	@Override
+	public void updateChild(Translation translation) {
+		List<Translation> translations = repository.findAllByExtendedAndStatus(translation.getId(),
+				BaseModel.STATUS.EXTENDED);
+		if (translations == null) {
+			return;
+		}
+		translations = translations.stream().peek(t -> t.update(translation)).collect(Collectors.toList());
+		translations = repository.saveAll(translations);
+		translations.stream().peek(this::updateChild).count();
+	}
 
-    /**
-     * @param remoteKeys
-     * @param remoteTranslations
-     * @param project
-     * @param locale
-     * @return
-     */
-    public List<Translation> createTranslationsForKeys(List<Key> keys, Map<String, String> translations, Project project, Locale locale) {
+	@Override
+	public void addChild(Translation translation) {
+		List<Key> keys = keyService.getRepository().findAllByExtended(translation.getKeys().getId());
+		List<Translation> translations = keys.stream().map(k -> new Translation(translation, k))
+				.collect(Collectors.toList());
+		translations = repository.saveAll(translations);
+		translations.stream().peek(this::addChild).count();
+	}
 
-        return keys.stream().map(k -> {
-            Translation translation = new Translation();
-            logger.info(k.getName());
-            logger.info("translation =" + translations.get(k.getName()));
-            translation.setContent(translations.get(k.getName()));
-            translation.setKeys(k);
-            translation.setProjects(project);
-            translation.setLocales(locale);
-            return translation;
-        }).collect(Collectors.toList());
-    }
+	@Override
+	public void extend(Long childProjectId, Long parentdProjectId) {
+		Project project = projectService.getRepository().getOne(childProjectId);
+		List<Translation> translations = repository.findAllByProjectsId(parentdProjectId);
+		List<Key> keys = keyService.getRepository().findAllByProjectsId(childProjectId);
+		Map<Long, Key> keyMap = keys.stream().collect(Collectors.toMap(Key::getExtended, k -> k));
+		List<Translation> newTranslations = translations.stream().map(Translation::new).peek(t -> {
+			t.setKeys(keyMap.get(t.getKeys().getId()));
+			t.setProjects(project);
+		}).collect(Collectors.toList());
 
-    /**
-     * @param translationUri
-     * @return
-     */
-    public Map<String, String> getTranslationFromURI(TranslationUri translationUri) {
-        RestTemplate restTemplate = new RestTemplate();
-        String remoteUrl = translationUri.getUri();
-        log.info(remoteUrl);
-        HashMap<String, String> response = restTemplate.getForObject(remoteUrl, new HashMap<String, String>().getClass());
-        log.info(response.toString());
-        return response;
-    }
+		repository.saveAll(newTranslations);
 
-    public Set<String> getKeyList(Map<String, String> translation) {
-        return translation.keySet();
-    }
+	}
 
-    /**
-     * @param translation
-     */
-    @Override
-    public void updateChild(Translation translation) {
-        List<Translation> translations = repository.findAllByExtendedAndStatus(translation.getId(), BaseModel.STATUS.EXTENDED);
-        if (translations == null) {
-            return;
-        }
-        translations = translations.stream().peek(t -> t.update(translation)).collect(Collectors.toList());
-        translations = repository.saveAll(translations);
-        translations.stream().peek(this::updateChild).count();
-    }
+	/**
+	 * @param translationUri
+	 * @return
+	 */
+	public Map<String, String> getTranslationFromURI(TranslationUri translationUri) {
+		RestTemplate restTemplate = new RestTemplate();
+		String remoteUrl = translationUri.getUri();
+		log.info(remoteUrl);
+		HashMap<String, String> response = restTemplate.getForObject(remoteUrl,
+				new HashMap<String, String>().getClass());
+		log.info(response.toString());
+		return response;
+	}
 
-    @Override
-    public void addChild(Translation translation) {
-        List<Key> keys = keyService.getRepository().findAllByExtended(translation.getKeys().getId());
-        List<Translation> translations = keys.stream().map(k -> new Translation(translation, k)).collect(Collectors.toList());
-        translations = repository.saveAll(translations);
-        translations.stream().peek(this::addChild).count();
-    }
+	public Set<String> getKeyList(Map<String, String> translation) {
+		return translation.keySet();
+	}
+
 }

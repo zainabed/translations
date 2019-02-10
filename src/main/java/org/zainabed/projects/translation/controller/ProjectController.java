@@ -27,6 +27,9 @@ import org.zainabed.projects.translation.model.TranslationUri;
 import org.zainabed.projects.translation.repository.LocaleRepository;
 import org.zainabed.projects.translation.repository.ProjectRepository;
 import org.zainabed.projects.translation.repository.TranslationRepository;
+import org.zainabed.projects.translation.service.KeyService;
+import org.zainabed.projects.translation.service.LocaleService;
+import org.zainabed.projects.translation.service.ServiceComposite;
 import org.zainabed.projects.translation.service.ProjectService;
 import org.zainabed.projects.translation.service.TranslationService;
 
@@ -38,7 +41,7 @@ public class ProjectController {
 	ProjectRepository repository;
 
 	@Autowired
-	LocaleRepository localeRepository;
+	LocaleService localeService;
 
 	@Autowired
 	ProjectService projectService;
@@ -47,7 +50,13 @@ public class ProjectController {
 	TranslationService translationService;
 
 	@Autowired
+	KeyService keyService;
+
+	@Autowired
 	private TranslationRepository translationRepository;
+
+	@Autowired
+	ServiceComposite serviceComposite;
 
 	/**
 	 * 
@@ -56,11 +65,8 @@ public class ProjectController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(path = "/{id}/locales/{localeId}")
-	public void deleteLocale(@PathVariable("id") Long id, @PathVariable("localeId") Long localeId) {
-		Project project = repository.getOne(id);
-		Locale locale = localeRepository.getOne(localeId);
-		project.getLocales().remove(locale);
-		repository.save(project);
+	public void deleteLocale(@PathVariable("id") Long projectId, @PathVariable("localeId") Long localeId) {
+		projectService.deleteOneByLocaleId(projectId, localeId);
 	}
 
 	/**
@@ -70,11 +76,8 @@ public class ProjectController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(path = "/{id}/locales/{localeId}")
-	public void addLocale(@PathVariable("id") Long id, @PathVariable("localeId") Long localeId) {
-		Project project = repository.getOne(id);
-		Locale locale = localeRepository.getOne(localeId);
-		project.getLocales().add(locale);
-		repository.save(project);
+	public void addLocale(@PathVariable("id") Long projectId, @PathVariable("localeId") Long localeId) {
+		projectService.addLocaleToProject(localeId, projectId);
 	}
 
 	/**
@@ -89,7 +92,7 @@ public class ProjectController {
 	@GetMapping(path = "/{id}/locales/{localeId}/export/{type}", produces = { "text/plain" })
 	public String export(@PathVariable("id") Long projectId, @PathVariable("localeId") Long localeId,
 			@PathVariable("type") String type, HttpServletRequest request) {
-		Locale locale = localeRepository.getOne(localeId);
+		Locale locale = localeService.getRepository().getOne(localeId);
 		List<Translation> translations = translationRepository.findAllByLocalesIdAndProjectsId(localeId, projectId);
 		TranslationExporter translationExporter = TranslationExporterFactory.get(type);
 		String exportPath = getHostUri(request, "/projects")
@@ -105,7 +108,12 @@ public class ProjectController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(path = "/{id}/extend/{extend}")
 	public void extend(@PathVariable("id") Long projectId, @PathVariable("extend") Long extendProjectId) {
-		projectService.extendProject(projectId, extendProjectId);
+		serviceComposite.reset();
+		serviceComposite.addServiceComponent(projectService);
+		serviceComposite.addServiceComponent(localeService);
+		serviceComposite.addServiceComponent(keyService);
+		serviceComposite.addServiceComponent(translationService);
+		serviceComposite.extend(projectId, extendProjectId);
 	}
 
 	/**
@@ -114,11 +122,10 @@ public class ProjectController {
 	 * @param localeId
 	 * @param translationUri
 	 */
+	@Deprecated
 	@PostMapping(path = "/{projectId}/locales/{localeId}/import-uri")
 	public void importURI(@PathVariable("projectId") Long projectId, @PathVariable("localeId") Long localeId,
-			@RequestBody TranslationUri translationUri
-
-	) {
+			@RequestBody TranslationUri translationUri) {
 
 	}
 
@@ -136,7 +143,7 @@ public class ProjectController {
 			@RequestParam("file") MultipartFile file) {
 		TranslationImporter translationImporter = TranslationImporterFactory.get(type);
 		Map<String, String> translations = translationImporter.imports(file);
-		return translationService.storeTranslations(translations, projectId, localeId);
+		return translationService.save(translations, projectId, localeId);
 	}
 
 	/**

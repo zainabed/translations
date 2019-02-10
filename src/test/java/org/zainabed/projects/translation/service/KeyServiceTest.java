@@ -53,7 +53,7 @@ public class KeyServiceTest {
 
     @Test
     public void shouldReturnStringListFromKeys() {
-        List<String> keyNameList = keyService.getKeyStringList(keys);
+        List<String> keyNameList = keyService.getKeyNames(keys);
         boolean result = keyNameList.stream().allMatch(k -> keyNames.contains(k));
         assertTrue(result);
     }

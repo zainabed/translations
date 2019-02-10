@@ -30,57 +30,47 @@ import org.zainabed.projects.translation.service.TranslationService;
 @RequestMapping("translations")
 public class TranslationController {
 
-    @Autowired
-    TranslationService translationService;
+	@Autowired
+	TranslationService translationService;
 
-    Logger logger = LoggerFactory.getLogger(TranslationController.class);
+	Logger logger = LoggerFactory.getLogger(TranslationController.class);
 
-    /*@PutMapping(path = "/{id}")
-    public Translation put(@Valid @RequestBody Translation translation) {
-        logger.info("Inside Translation controller");
-        translation.setStatus(Translation.STATUS.UPDATED);
-        Translation saveTranslation = translationService.getRepository().save(translation);
-        translationService.updateChild(translation);
-        return saveTranslation;
-    }*/
-
-
-    /**
-     * 
-     * @param tempFolder
-     * @param fileName
-     * @param request
-     * @return
-     */
-    @GetMapping("/export/{tempFolder}/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable("tempFolder") String tempFolder, @PathVariable String fileName, HttpServletRequest request) {
-        // Load file as Resource
-    	Path filePath = Paths.get("./translations/export/" + tempFolder + "/" + fileName);
-        Resource resource = null;
+	/**
+	 * 
+	 * @param tempFolder
+	 * @param fileName
+	 * @param request
+	 * @return
+	 */
+	@GetMapping("/export/{tempFolder}/{fileName:.+}")
+	public ResponseEntity<Resource> downloadFile(@PathVariable("tempFolder") String tempFolder,
+			@PathVariable String fileName, HttpServletRequest request) {
+		// Load file as Resource
+		Path filePath = Paths.get("./translations/export/" + tempFolder + "/" + fileName);
+		Resource resource = null;
 		try {
 			resource = new UrlResource(filePath.toUri());
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-        // Try to determine file's content type
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            logger.info("Could not determine file type.");
-        }
 
-        // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
-            contentType = "application/octet-stream";
-        }
+		// Try to determine file's content type
+		String contentType = null;
+		try {
+			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+		} catch (IOException ex) {
+			logger.info("Could not determine file type.");
+		}
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
-    }
+		// Fallback to the default content type if type could not be determined
+		if (contentType == null) {
+			contentType = "application/octet-stream";
+		}
+
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+				.body(resource);
+	}
 
 }

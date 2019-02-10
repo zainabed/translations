@@ -54,7 +54,7 @@ public class TranslationServiceIT {
         testTranslation = translationService.getRepository().getOne(1L);
     }
 
-    /*@Test
+    @Test
     public void shouldUpdateChildTranslation() {
         translationService.updateChild(testTranslation);
         String content = testTranslation.getContent();
@@ -62,6 +62,6 @@ public class TranslationServiceIT {
         translations.stream().forEach(t -> {
             assertEquals(content, t.getContent());
         });
-    }*/
+    }
 
 }

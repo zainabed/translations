@@ -1,13 +1,7 @@
 package org.zainabed.projects.translation.service;
 
-/**
- * 
- * @author zain
- *
- * @param <T>
- */
 public interface ModelService<T> {
-
+	
 	/**
 	 * 
 	 * @param model

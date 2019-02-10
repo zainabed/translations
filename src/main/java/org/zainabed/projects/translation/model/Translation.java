@@ -1,14 +1,15 @@
 package org.zainabed.projects.translation.model;
 
-import java.util.List;
+import java.util.Map;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.*;
-
-import org.hibernate.annotations.Cascade;
-import org.zainabed.projects.translation.model.event.TranslationEvent;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -42,14 +43,22 @@ public class Translation extends BaseModel {
         content = translation.getContent();
         locales = translation.getLocales();
         extended = translation.getId();
+        keys = translation.getKeys();
         status = STATUS.EXTENDED;
     }
 
-    public Translation(Translation translation, Key keys){
-        this(translation);
+    public Translation(Key keys){
         projects = keys.getProjects();
         this.keys = keys;
     }
+    
+    public Translation(Translation translation, Key keys){
+        this(translation);
+		projects = keys.getProjects();
+		this.keys = keys;
+    }
+    
+   
 
     public String getContent() {
         return content;
@@ -57,6 +66,10 @@ public class Translation extends BaseModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+    
+    public void setContent(Map<String, String> translations) {
+        this.content = translations.get(getKeyName());
     }
 
     public Boolean getVerified() {
@@ -113,4 +126,9 @@ public class Translation extends BaseModel {
     public void update(Translation translation){
         content = translation.getContent();
     }
+
+	public void update(Map<String, String> translations, Locale locales) {
+		content = translations.get(getKeyName());
+		this.locales = locales;
+	}
 }
