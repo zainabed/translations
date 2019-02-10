@@ -49,6 +49,11 @@ public class ProjectController {
 	@Autowired
 	private TranslationRepository translationRepository;
 
+	/**
+	 * 
+	 * @param id
+	 * @param localeId
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(path = "/{id}/locales/{localeId}")
 	public void deleteLocale(@PathVariable("id") Long id, @PathVariable("localeId") Long localeId) {
@@ -58,6 +63,11 @@ public class ProjectController {
 		repository.save(project);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param localeId
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(path = "/{id}/locales/{localeId}")
 	public void addLocale(@PathVariable("id") Long id, @PathVariable("localeId") Long localeId) {
@@ -67,6 +77,14 @@ public class ProjectController {
 		repository.save(project);
 	}
 
+	/**
+	 * 
+	 * @param projectId
+	 * @param localeId
+	 * @param type
+	 * @param request
+	 * @return
+	 */
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping(path = "/{id}/locales/{localeId}/export/{type}", produces = { "text/plain" })
 	public String export(@PathVariable("id") Long projectId, @PathVariable("localeId") Long localeId,
@@ -79,12 +97,23 @@ public class ProjectController {
 		return exportPath;
 	}
 
+	/**
+	 * 
+	 * @param projectId
+	 * @param extendProjectId
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(path = "/{id}/extend/{extend}")
 	public void extend(@PathVariable("id") Long projectId, @PathVariable("extend") Long extendProjectId) {
 		projectService.extendProject(projectId, extendProjectId);
 	}
 
+	/**
+	 * 
+	 * @param projectId
+	 * @param localeId
+	 * @param translationUri
+	 */
 	@PostMapping(path = "/{projectId}/locales/{localeId}/import-uri")
 	public void importURI(@PathVariable("projectId") Long projectId, @PathVariable("localeId") Long localeId,
 			@RequestBody TranslationUri translationUri
@@ -110,6 +139,12 @@ public class ProjectController {
 		return translationService.storeTranslations(translations, projectId, localeId);
 	}
 
+	/**
+	 * 
+	 * @param request
+	 * @param path
+	 * @return
+	 */
 	String getHostUri(HttpServletRequest request, String path) {
 		String requestPath = request.getRequestURL().toString();
 		return requestPath.substring(0, requestPath.indexOf(path)) + "/";

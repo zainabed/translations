@@ -19,6 +19,10 @@ public class TranslationEvent {
 
     Logger logger = LoggerFactory.getLogger(TranslationEvent.class);
 
+    /**
+     * 
+     * @param translation
+     */
     @PostUpdate
     public void update(Translation translation) {
         logger.info("Inside listener");

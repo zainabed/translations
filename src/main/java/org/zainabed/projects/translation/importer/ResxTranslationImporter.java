@@ -9,8 +9,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.zainabed.projects.translation.model.xml.TranslationElement;
-import org.zainabed.projects.translation.model.xml.TranslationRoot;
+import org.zainabed.projects.translation.model.xml.ResxData;
+import org.zainabed.projects.translation.model.xml.ResxRoot;
 
 class ResxTranslationImporter extends AbstractTranslationImporter {
 
@@ -18,14 +18,14 @@ class ResxTranslationImporter extends AbstractTranslationImporter {
 	public Map<String, String> build(String fileName) {
 		try {
 			File file = new File(fileName);
-			JAXBContext jaxbContext = JAXBContext.newInstance(TranslationRoot.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(ResxRoot.class);
 
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			TranslationRoot translationRoot = (TranslationRoot) jaxbUnmarshaller.unmarshal(file);
-			List<TranslationElement> translationElements = translationRoot.getTranslationElements();
+			ResxRoot resxRoot = (ResxRoot) jaxbUnmarshaller.unmarshal(file);
+			List<ResxData> resxDatas = resxRoot.getResxDatas();
 			
-			return translationElements.stream()
-					.collect(Collectors.toMap(TranslationElement::getName, TranslationElement::getValue));
+			return resxDatas.stream()
+					.collect(Collectors.toMap(ResxData::getName, ResxData::getValue));
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}

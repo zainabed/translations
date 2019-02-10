@@ -5,7 +5,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,11 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -53,7 +50,7 @@ public class UserJpaRepositoryTest {
 	Gson gson = new Gson();
 	AuthenticationToken token;
 
-	/*@BeforeEach
+	@BeforeEach
 	public void loadModel(RestDocumentationExtension restDocumentation) {
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context)
 				.apply(documentationConfiguration(restDocumentation)).build();
@@ -138,7 +135,7 @@ public class UserJpaRepositoryTest {
 		user.setPassword(null);
 		mvc.perform(post("/users").content(gson.toJson(user)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is4xxClientError());
-	}*/
+	}
 
 	// End of Unit test for User constraint violations
 

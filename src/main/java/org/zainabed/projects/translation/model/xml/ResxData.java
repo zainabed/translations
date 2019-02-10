@@ -8,16 +8,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "data")
-public class TranslationElement {
+public class ResxData {
 
     private String value;
     private String name;
 
-    public TranslationElement() {
+    public ResxData() {
 
     }
 
-    public TranslationElement(Translation translation) {
+    public ResxData(Translation translation) {
         name = translation.getKeyName();
         value = translation.getContent();
     }

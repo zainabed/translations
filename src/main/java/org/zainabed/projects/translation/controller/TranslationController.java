@@ -45,6 +45,13 @@ public class TranslationController {
     }*/
 
 
+    /**
+     * 
+     * @param tempFolder
+     * @param fileName
+     * @param request
+     * @return
+     */
     @GetMapping("/export/{tempFolder}/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable("tempFolder") String tempFolder, @PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
