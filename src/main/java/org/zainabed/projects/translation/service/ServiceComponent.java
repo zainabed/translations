@@ -1,10 +1,8 @@
 package org.zainabed.projects.translation.service;
 
 /**
- * 
- * @author zain
  *
- * @param <T>
+ * @param <I>
  */
 public interface ServiceComponent<I> {
 

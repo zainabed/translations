@@ -66,9 +66,9 @@ public class StringsXmlTranslationExporter extends AbstractTranslationExporter {
     }
 
     /**
-	 * Method saves {@link StringResourcesR} object into translation XML file.
+	 * Method saves {@link StringResources} object into translation XML file.
 	 * 
-	 * @param String File name
+	 * @param name File name
 	 * @return Translation file URI
 	 */
     @Override

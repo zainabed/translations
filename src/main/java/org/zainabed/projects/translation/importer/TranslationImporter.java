@@ -22,13 +22,17 @@ import org.zainabed.projects.translation.model.Translation;
  */
 public interface TranslationImporter {
 
-	/**
-	 * Method should transform {@link MultipartFile} object into {@link Map} object.
-	 * 
-	 * @param MultipartFile
-	 *            {@link MultipartFile} file object
-	 * @return Map of Strings
-	 */
-	Map<String, String> imports(MultipartFile file);
+    String ANDROID_FORMAT = "string-xml";
+    String JAVA_FORMAT = "property";
+    String JSON_FORMAT = "json";
+    String NET_FORMAT = "resx";
+    
+    /**
+     * Method should transform {@link MultipartFile} object into {@link Map} object.
+     *
+     * @param file {@link MultipartFile} file object
+     * @return Map of Strings
+     */
+    Map<String, String> imports(MultipartFile file);
 
 }

@@ -21,18 +21,17 @@ import org.zainabed.projects.translation.model.Translation;
  */
 public interface TranslationExporter {
 
-	public static final String ANDROID_FORMT = "string-xml";
-	public static final String JAVA_FORMAT = "property";
-	public static final String JSON_FORMAT = "json";
-	public static final String NET_FORMAT = "resx";
+    String ANDROID_FORMAT = "string-xml";
+    String JAVA_FORMAT = "property";
+    String JSON_FORMAT = "json";
+    String NET_FORMAT = "resx";
 
-	/**
-	 * Method should export {@link Translation} objects into file system persist
-	 * inside application and return file locations as URI for given file name.
-	 *
-	 * @param translations
-	 *            List of {@link Translation} objects
-	 * @return Saved file Uri
-	 */
-	String export(List<Translation> translations, String fileName);
+    /**
+     * Method should export {@link Translation} objects into file system persist
+     * inside application and return file locations as URI for given file name.
+     *
+     * @param translations List of {@link Translation} objects
+     * @return Saved file Uri
+     */
+    String export(List<Translation> translations, String fileName);
 }

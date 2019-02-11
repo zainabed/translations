@@ -18,7 +18,10 @@ public class UserAuthentication implements JwtAuthenticationService {
 	UserJpaRepository repository;
 
 	/**
-	 * 
+	 *
+	 * @param userCredential
+	 * @return
+	 * @throws AuthenticationException
 	 */
 	@Override
 	public UserDetail authenticate(UserCredential userCredential) throws AuthenticationException {

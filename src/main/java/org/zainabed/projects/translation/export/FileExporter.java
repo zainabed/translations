@@ -7,7 +7,7 @@ import java.util.List;
  * export entity model of given type.</p>
  *
  * <p>This interface provides three methods to retrieve file name according context of method.
- * Interface allows user to have freed to decide model structure to export and it depend on
+ * Interface allows user to have freedom to decide model structure to export and it depend on
  * implementation class.
  * </p>
  *
@@ -20,7 +20,7 @@ import java.util.List;
 public interface FileExporter<T> {
 
     /**
-     * Build given entity model into user specific data structure.
+     * Method builds given entity model into user specific data structure.
      * Implementation should persist this data structure into class variable
      * to use it in other methods of this interface.
      *

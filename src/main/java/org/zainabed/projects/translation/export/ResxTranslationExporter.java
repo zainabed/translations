@@ -73,7 +73,7 @@ public class ResxTranslationExporter extends AbstractTranslationExporter {
 	/**
 	 * Method saves {@link ResxRoot} object into translation XML file.
 	 * 
-	 * @param String File name
+	 * @param name File name
 	 * @return Translation file URI
 	 */
 	@Override
@@ -85,7 +85,7 @@ public class ResxTranslationExporter extends AbstractTranslationExporter {
 
 			jaxbMarshaller.marshal(resxRoot, new File(getFilePath(name)));
 		} catch (JAXBException e) {
-			logger.warning(e.getLocalizedMessage().toString());
+			logger.warning(e.getLocalizedMessage());
 		}
 		return getFileUri();
 	}

@@ -12,8 +12,21 @@ import javax.xml.bind.Unmarshaller;
 import org.zainabed.projects.translation.model.xml.ResxData;
 import org.zainabed.projects.translation.model.xml.ResxRoot;
 
+/**
+ * Implementation of {@link AbstractTranslationImporter} to implement build method
+ * to transform .Net frameworks translation file content into {@link Map} key value pairs which
+ * then to can be imported into application.
+ *
+ * @author Zainul Shaikh
+ */
 class ResxTranslationImporter extends AbstractTranslationImporter {
 
+	/**
+	 * Method read saved Resx translation file and transform content into {@link Map} key value paris.
+	 *
+	 * @param fileName Absolute path of save file
+	 * @return {@link Map} key value pairs
+	 */
 	@Override
 	public Map<String, String> build(String fileName) {
 		try {

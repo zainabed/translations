@@ -1,17 +1,18 @@
 package org.zainabed.projects.translation.export;
 
-/** 
- * This class is a factory method class to provide different 
+/**
+ * This class is a factory method class to provide different
  * set of Translation exporter objects.
- * 
- * @author Zainul Shaikh 
+ *
+ * @author Zainul Shaikh
  */
 public abstract class TranslationExporterFactory {
 
-    /**Factory method to instantiate translation object according
+    /**
+     * Factory method to instantiate translation object according
      * to given file format.
-     * 
-     * @param String File format
+     *
+     * @param type File format
      * @return {@link TranslationExporter} object
      */
     public static TranslationExporter get(String type) {
@@ -22,7 +23,7 @@ public abstract class TranslationExporterFactory {
                 return new JsonTranslationExporter();
             case TranslationExporter.NET_FORMAT:
                 return new ResxTranslationExporter();
-            case TranslationExporter.ANDROID_FORMT:
+            case TranslationExporter.ANDROID_FORMAT:
                 return new StringsXmlTranslationExporter();
             default:
                 return null;

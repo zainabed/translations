@@ -1,5 +1,9 @@
 package org.zainabed.projects.translation.service;
 
+/**
+ *
+ * @param <T>
+ */
 public interface ModelService<T> {
 	
 	/**

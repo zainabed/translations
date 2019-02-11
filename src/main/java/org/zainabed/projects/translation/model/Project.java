@@ -3,16 +3,7 @@ package org.zainabed.projects.translation.model;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,7 +30,7 @@ public class Project extends BaseModel {
     @ManyToMany
     private List<User> users;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "project_locales",
             joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
@@ -47,10 +38,11 @@ public class Project extends BaseModel {
     private Set<Locale> locales;
 
 
-    @OneToMany(mappedBy = "projects")
+    @OneToMany(mappedBy = "projects", fetch = FetchType.LAZY)
     private List<Key> keys;
 
-    @OneToMany(mappedBy = "projects")
+
+    @OneToMany(mappedBy = "projects",fetch = FetchType.LAZY)
     private List<Translation> translations;
 
 
