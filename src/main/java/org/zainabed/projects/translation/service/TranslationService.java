@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.zainabed.projects.translation.model.BaseModel;
@@ -23,7 +24,8 @@ import org.zainabed.projects.translation.repository.TranslationRepository;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
-public class TranslationService implements ServiceComponent<Long>, ModelService<Translation> {
+@Order(value=4)
+public class TranslationService implements ServiceComponent<Long>, ServiceEvent<Translation> {
 
     Logger logger = Logger.getLogger(TranslationService.class.getName());
 

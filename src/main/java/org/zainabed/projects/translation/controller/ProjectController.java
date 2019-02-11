@@ -1,8 +1,20 @@
 package org.zainabed.projects.translation.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.zainabed.projects.translation.export.TranslationExporter;
 import org.zainabed.projects.translation.export.TranslationExporterFactory;
@@ -12,13 +24,12 @@ import org.zainabed.projects.translation.model.Locale;
 import org.zainabed.projects.translation.model.Project;
 import org.zainabed.projects.translation.model.Translation;
 import org.zainabed.projects.translation.model.TranslationUri;
-import org.zainabed.projects.translation.repository.ProjectRepository;
-import org.zainabed.projects.translation.repository.TranslationRepository;
-import org.zainabed.projects.translation.service.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import org.zainabed.projects.translation.service.KeyService;
+import org.zainabed.projects.translation.service.LocaleService;
+import org.zainabed.projects.translation.service.ProjectService;
+import org.zainabed.projects.translation.service.ServiceComponent;
+import org.zainabed.projects.translation.service.ServiceComposite;
+import org.zainabed.projects.translation.service.TranslationService;
 
 /**
  * Rest controller for {@link Project} entity model.
@@ -31,9 +42,7 @@ import java.util.Map;
 @RequestMapping("/projects")
 public class ProjectController {
 
-    @Autowired
-    ProjectRepository repository;
-
+  
     @Autowired
     LocaleService localeService;
 
@@ -42,12 +51,6 @@ public class ProjectController {
 
     @Autowired
     TranslationService translationService;
-
-    @Autowired
-    KeyService keyService;
-
-    @Autowired
-    private TranslationRepository translationRepository;
 
     @Autowired
     ServiceComposite serviceComposite;
@@ -99,7 +102,7 @@ public class ProjectController {
     public String export(@PathVariable("id") Long projectId, @PathVariable("localeId") Long localeId,
                          @PathVariable("type") String type, HttpServletRequest request) {
         Locale locale = localeService.getRepository().getOne(localeId);
-        List<Translation> translations = translationRepository.findAllByLocalesIdAndProjectsId(localeId, projectId);
+        List<Translation> translations = translationService.getRepository().findAllByLocalesIdAndProjectsId(localeId, projectId);
         TranslationExporter translationExporter = TranslationExporterFactory.get(type);
         String exportFileUri = translationExporter.export(translations, locale.getCode());
         return translationService.getHostUri(request, exportFileUri);
@@ -137,13 +140,7 @@ public class ProjectController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(path = "/{id}/extend/{extend}")
     public void extend(@PathVariable("id") Long projectId, @PathVariable("extend") Long extendProjectId) {
-        serviceComposite.reset();
-        serviceComposite.addServiceComponent(projectService);
-        serviceComposite.addServiceComponent(localeService);
-        serviceComposite.addServiceComponent(keyService);
-        serviceComposite.addServiceComponent(translationService);
-
-        serviceComposite.extend(projectId, extendProjectId);
+      serviceComposite.extend(projectId, extendProjectId);
     }
 
     /**

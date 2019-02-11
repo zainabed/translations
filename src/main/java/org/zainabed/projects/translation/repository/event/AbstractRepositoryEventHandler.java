@@ -3,23 +3,23 @@ package org.zainabed.projects.translation.repository.event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleAfterSave;
-import org.zainabed.projects.translation.service.ModelService;
+import org.zainabed.projects.translation.service.ServiceEvent;
 
-public class AbstractModelEventHandler<T> implements ModelService<T> {
+public class AbstractRepositoryEventHandler<T> implements ServiceEvent<T> {
 
     @Autowired
-    protected ModelService<T> modelService;
+    protected ServiceEvent<T> serviceEvent;
 
 
     @HandleAfterSave
     @Override
     public void updateChild(T model) {
-        modelService.updateChild(model);
+        serviceEvent.updateChild(model);
     }
 
     @HandleAfterCreate
     @Override
     public void addChild(T model) {
-        modelService.addChild(model);
+        serviceEvent.addChild(model);
     }
 }

@@ -4,8 +4,8 @@ package org.zainabed.projects.translation.service;
  *
  * @param <T>
  */
-public interface ModelService<T> {
-	
+public interface ServiceEvent<T> {
+
 	/**
 	 * 
 	 * @param model

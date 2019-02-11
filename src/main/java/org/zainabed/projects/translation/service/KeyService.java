@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.zainabed.projects.translation.model.BaseModel;
 import org.zainabed.projects.translation.model.Key;
@@ -15,7 +16,8 @@ import org.zainabed.projects.translation.model.Translation;
 import org.zainabed.projects.translation.repository.KeyRepository;
 
 @Component
-public class KeyService implements ServiceComponent<Long>, ModelService<Key> {
+@Order(value=3)
+public class KeyService implements ServiceComponent<Long>, ServiceEvent<Key> {
 
 	@Autowired
 	ProjectService projectService;

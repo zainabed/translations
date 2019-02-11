@@ -1,12 +1,14 @@
 package org.zainabed.projects.translation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.zainabed.projects.translation.model.Locale;
 import org.zainabed.projects.translation.model.Project;
 import org.zainabed.projects.translation.repository.ProjectRepository;
 
 @Component
+@Order(value=1)
 public class ProjectService implements ServiceComponent<Long> {
 
 	@Autowired
