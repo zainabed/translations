@@ -17,6 +17,12 @@ public class UserAuthentication implements JwtAuthenticationService {
 	@Autowired
 	UserJpaRepository repository;
 
+	/**
+	 *
+	 * @param userCredential
+	 * @return
+	 * @throws AuthenticationException
+	 */
 	@Override
 	public UserDetail authenticate(UserCredential userCredential) throws AuthenticationException {
 		UserEntity userEntity = null;
