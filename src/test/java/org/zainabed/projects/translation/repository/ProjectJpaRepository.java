@@ -88,7 +88,7 @@ public class ProjectJpaRepository {
 		role = new Role();
 		role.setName("ROLE_USER");
 		roles.add(role);
-		user.setRoles(roles);
+		//user.setRoles(roles);
 
 		UserEntity userEntity = new UserEntity(user);
 

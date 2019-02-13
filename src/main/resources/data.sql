@@ -59,13 +59,9 @@ INSERT INTO role(id,name) VALUES
 (4, 'ROLE_TRANSLATOR'),
 (5, 'ROLE_PO');
 
-INSERT INTO user_roles(user_id, role_id) VALUES
-(1, 1),
-(1, 2),
-(2, 2),
-(3, 2),
-(3, 3),
-(4, 2),
-(4, 4),
-(5, 2),
-(5, 5);
+INSERT INTO user_project_role(id, users_id, projects_id, roles_id) VALUES
+(1, 1, 134545, 1),
+(2, 1, 134545, 2),
+(3, 1, 254545, 2),
+(4, 1, null , 2),
+(5, 1, null, 4);
