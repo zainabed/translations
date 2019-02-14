@@ -64,4 +64,8 @@ INSERT INTO user_project_role(id, users_id, projects_id, roles_id) VALUES
 (2, 1, 134545, 2),
 (3, 1, 254545, 2),
 (4, 1, null , 2),
-(5, 1, null, 4);
+(5, 1, null, 4),
+(6, 2, null, 2),
+(7, 5, 134545, 2),
+(8, 5, 134545, 5),
+(9, 5, null, 2);

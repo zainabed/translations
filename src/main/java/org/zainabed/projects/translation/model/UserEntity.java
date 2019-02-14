@@ -27,7 +27,7 @@ public class UserEntity implements UserDetail {
 	}
 
 	public UserEntity(User user) {
-		this.username = user.getUsername();
+		this.username = user.getUsername() + "_" + user.getId();
 		this.password = user.getPassword();
 		List<UserProjectRole> userProjectRoles = user.getUserProjectRoles();
 		try {

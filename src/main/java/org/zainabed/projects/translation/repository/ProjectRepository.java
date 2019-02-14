@@ -17,7 +17,7 @@ import org.zainabed.projects.translation.model.projection.ProjectView;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 	@RestResource(path = "user")
-	@Query( value = "select * from Project p left join UserProjectRole upr on p.id = upr.projects_id where upr.users_id = ?1", nativeQuery = true)
+	@Query( value = "select * from translation_project pp where pp.id in (select distinct(p.id) from translation_project p left join user_project_role upr on p.id = upr.projects_id where upr.users_id = ?1)", nativeQuery = true)
 	public List<Project> getProjectsFromUsersId(@Param("id") Long userId);
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
