@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -37,8 +38,13 @@ public class ProjectAuthenticationFilter extends OncePerRequestFilter {
 
         request = new RequestWrapper((HttpServletRequest) request);
 
+        Function<GrantedAuthority, String> authorityToString = a -> {
+            return ((GrantedAuthority) a).getAuthority();
+        };
+
         try {
             String projectId = requestParameterChain.getParameter(request, PROJECT_PATH);
+
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             logger.info("Authentication:" + authentication);
             if (projectId == null || projectId.isEmpty() || authentication == null) {
