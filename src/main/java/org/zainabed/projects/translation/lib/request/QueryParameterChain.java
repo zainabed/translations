@@ -40,7 +40,7 @@ public class QueryParameterChain extends AbstractRequestParameterChain {
      *
      * @param request   {@link HttpServletRequest} request object
      * @param parameter Parameter name
-     * @return
+     * @return Returns value of given parameter otherwise returns null
      */
     @Override
     public String getParameter(HttpServletRequest request, String parameter) {
