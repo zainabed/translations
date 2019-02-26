@@ -42,7 +42,7 @@ import org.zainabed.projects.translation.service.TranslationService;
 @RequestMapping("/projects")
 public class ProjectController {
 
-  
+
     @Autowired
     LocaleService localeService;
 
@@ -101,11 +101,7 @@ public class ProjectController {
     @GetMapping(path = "/{id}/locales/{localeId}/export/{type}", produces = {"text/plain"})
     public String export(@PathVariable("id") Long projectId, @PathVariable("localeId") Long localeId,
                          @PathVariable("type") String type, HttpServletRequest request) {
-        Locale locale = localeService.getRepository().getOne(localeId);
-        List<Translation> translations = translationService.getRepository().findAllByLocalesIdAndProjectsId(localeId, projectId);
-        TranslationExporter translationExporter = TranslationExporterFactory.get(type);
-        String exportFileUri = translationExporter.export(translations, locale.getCode());
-        return translationService.getHostUri(request, exportFileUri);
+        return translationService.doExport(projectId, localeId, type, request);
     }
 
     /**
@@ -124,9 +120,7 @@ public class ProjectController {
     public List<Translation> importer(@PathVariable("projectId") Long projectId,
                                       @PathVariable("localeId") Long localeId, @PathVariable("type") String type,
                                       @RequestParam("file") MultipartFile file) {
-        TranslationImporter translationImporter = TranslationImporterFactory.get(type);
-        Map<String, String> translations = translationImporter.imports(file);
-        return translationService.save(translations, projectId, localeId);
+        return translationService.doImport(projectId, localeId, type, file);
     }
 
     /**
@@ -140,7 +134,7 @@ public class ProjectController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(path = "/{id}/extend/{extend}")
     public void extend(@PathVariable("id") Long projectId, @PathVariable("extend") Long extendProjectId) {
-      serviceComposite.extend(projectId, extendProjectId);
+        serviceComposite.extend(projectId, extendProjectId);
     }
 
     /**

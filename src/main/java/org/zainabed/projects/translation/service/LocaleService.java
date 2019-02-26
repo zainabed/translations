@@ -27,6 +27,11 @@ public class LocaleService implements ServiceComponent<Long> {
 		return repository;
 	}
 
+	/**
+	 *
+	 * @param childProjectId
+	 * @param parentProjectId
+	 */
 	@Override
 	public void extend(Long childProjectId, Long parentProjectId) {
 		Project project = projectService.getRepository().getOne(childProjectId);

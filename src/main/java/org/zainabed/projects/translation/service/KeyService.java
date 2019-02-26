@@ -64,6 +64,10 @@ public class KeyService implements ServiceComponent<Long>, ServiceEvent<Key> {
 		return repository.saveAll(keyList);
 	}
 
+	/**
+	 *
+	 * @param key
+	 */
 	@Override
 	public void updateChild(Key key) {
 		List<Key> keys = repository.findAllByExtendedAndStatus(key.getId(), BaseModel.STATUS.EXTENDED);
@@ -75,6 +79,10 @@ public class KeyService implements ServiceComponent<Long>, ServiceEvent<Key> {
 		keys.stream().peek(this::updateChild).count();
 	}
 
+	/**
+	 *
+	 * @param key
+	 */
 	@Override
 	public void addChild(Key key) {
 		List<Project> projects = projectService.getRepository().findAllByExtended(key.getProjects().getId());
@@ -92,12 +100,23 @@ public class KeyService implements ServiceComponent<Long>, ServiceEvent<Key> {
 
 	}
 
+	/**
+	 *
+	 * @param p
+	 * @return
+	 */
 	public static Function<String, Key> getKey(Project p) {
 		return s -> {
 			return new Key(s, p);
 		};
 	}
 
+	/**
+	 *
+	 * @param p
+	 * @param s
+	 * @return
+	 */
 	public static Function<Key, Key> getKey(Project p, BaseModel.STATUS s) {
 		return k -> {
 			return new Key(k, p, s);
