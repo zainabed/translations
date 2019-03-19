@@ -3,6 +3,7 @@ package org.zainabed.projects.translation.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -18,20 +19,27 @@ public class UserEntity implements UserDetail {
 	private String password;
 	private List<String> roles;
 
+	Logger logger = Logger.getLogger(UserEntity.class.getName());
+
 	public UserEntity(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
 
 	public UserEntity(User user) {
-		this.username = user.getUsername();
+		this.username = user.getUsername() + "_" + user.getId();
 		this.password = user.getPassword();
-		List<Role> roles = user.getRoles();
-		if (roles != null) {
-			this.roles = roles.stream().map(role -> role.getName()).collect(Collectors.toList());
-		} else {
-			this.roles = new ArrayList<>();
-			this.roles.add("ROLE_USER");
+		List<UserProjectRole> userProjectRoles = user.getUserProjectRoles();
+		try {
+			if (userProjectRoles != null) {
+				logger.info("user  project roles:" + userProjectRoles.size());
+				this.roles = userProjectRoles.stream().map(UserProjectRole::getProjectRole).collect(Collectors.toList());
+			} else {
+				this.roles = new ArrayList<>();
+				this.roles.add("ROLE_USER");
+			}
+		}catch (Exception e) {
+			logger.warning(e.getLocalizedMessage());
 		}
 
 	}

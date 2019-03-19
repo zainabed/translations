@@ -12,7 +12,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.zainabed.projects.translation.export.TranslationExporter;
+import org.zainabed.projects.translation.export.TranslationExporterFactory;
+import org.zainabed.projects.translation.importer.TranslationImporter;
+import org.zainabed.projects.translation.importer.TranslationImporterFactory;
 import org.zainabed.projects.translation.model.BaseModel;
 import org.zainabed.projects.translation.model.Key;
 import org.zainabed.projects.translation.model.Locale;
@@ -24,7 +31,7 @@ import org.zainabed.projects.translation.repository.TranslationRepository;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
-@Order(value=4)
+@Order(value = 4)
 public class TranslationService implements ServiceComponent<Long>, ServiceEvent<Translation> {
 
     Logger logger = Logger.getLogger(TranslationService.class.getName());
@@ -47,17 +54,6 @@ public class TranslationService implements ServiceComponent<Long>, ServiceEvent<
         return repository;
     }
 
-    /**
-     * @param translationUri
-     * @param projectId
-     * @param localeId
-     * @return
-     */
-    public List<Translation> importTranslationFromURI(TranslationUri translationUri, Long projectId, Long localeId) {
-        // Fetch translation from URI
-        Map<String, String> remoteTranslations = getTranslationFromURI(translationUri);
-        return save(remoteTranslations, projectId, localeId);
-    }
 
     /**
      * @param translations
@@ -153,6 +149,9 @@ public class TranslationService implements ServiceComponent<Long>, ServiceEvent<
         translations.stream().peek(this::updateChild).count();
     }
 
+    /**
+     * @param translation
+     */
     @Override
     public void addChild(Translation translation) {
         List<Key> keys = keyService.getRepository().findAllByExtended(translation.getKeys().getId());
@@ -162,10 +161,14 @@ public class TranslationService implements ServiceComponent<Long>, ServiceEvent<
         translations.stream().peek(this::addChild).count();
     }
 
+    /**
+     * @param childProjectId
+     * @param parentProjectId
+     */
     @Override
-    public void extend(Long childProjectId, Long parentdProjectId) {
+    public void extend(Long childProjectId, Long parentProjectId) {
         Project project = projectService.getRepository().getOne(childProjectId);
-        List<Translation> translations = repository.findAllByProjectsId(parentdProjectId);
+        List<Translation> translations = repository.findAllByProjectsId(parentProjectId);
         List<Key> keys = keyService.getRepository().findAllByProjectsId(childProjectId);
         Map<Long, Key> keyMap = keys.stream().collect(Collectors.toMap(Key::getExtended, k -> k));
         List<Translation> newTranslations = translations.stream().map(Translation::new).peek(t -> {
@@ -177,20 +180,11 @@ public class TranslationService implements ServiceComponent<Long>, ServiceEvent<
 
     }
 
+
     /**
-     * @param translationUri
+     * @param translation
      * @return
      */
-    public Map<String, String> getTranslationFromURI(TranslationUri translationUri) {
-        RestTemplate restTemplate = new RestTemplate();
-        String remoteUrl = translationUri.getUri();
-        log.info(remoteUrl);
-        HashMap<String, String> response = restTemplate.getForObject(remoteUrl,
-                new HashMap<String, String>().getClass());
-        log.info(response.toString());
-        return response;
-    }
-
     public Set<String> getKeyList(Map<String, String> translation) {
         return translation.keySet();
     }
@@ -204,5 +198,69 @@ public class TranslationService implements ServiceComponent<Long>, ServiceEvent<
         String projectPath = "/projects";
         String requestPath = request.getRequestURL().toString();
         return requestPath.substring(0, requestPath.indexOf(projectPath)) + "/" + path;
+    }
+
+    /**
+     * @param projectId
+     * @param localeId
+     * @param type
+     * @param request
+     * @return
+     */
+    public String doExport(Long projectId, Long localeId, String type, HttpServletRequest request) {
+        try {
+            Locale locale = localeService.getRepository().getOne(localeId);
+            List<Translation> translations = repository.findAllByLocalesIdAndProjectsId(localeId, projectId);
+            TranslationExporter translationExporter = TranslationExporterFactory.get(type);
+            String exportFileUri = translationExporter.export(translations, locale.getCode());
+            return getHostUri(request, exportFileUri);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * @param projectId
+     * @param localeId
+     * @param type
+     * @param file
+     * @return
+     */
+    public List<Translation> doImport(Long projectId, Long localeId, String type, MultipartFile file) {
+        try {
+            TranslationImporter translationImporter = TranslationImporterFactory.get(type);
+            Map<String, String> translations = translationImporter.imports(file);
+            return save(translations, projectId, localeId);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * @param translationUri
+     * @param projectId
+     * @param localeId
+     * @return
+     */
+    @Deprecated
+    public List<Translation> importTranslationFromURI(TranslationUri translationUri, Long projectId, Long localeId) {
+        // Fetch translation from URI
+        Map<String, String> remoteTranslations = getTranslationFromURI(translationUri);
+        return save(remoteTranslations, projectId, localeId);
+    }
+
+    /**
+     * @param translationUri
+     * @return
+     */
+    @Deprecated
+    public Map<String, String> getTranslationFromURI(TranslationUri translationUri) {
+        RestTemplate restTemplate = new RestTemplate();
+        String remoteUrl = translationUri.getUri();
+        log.info(remoteUrl);
+        HashMap<String, String> response = restTemplate.getForObject(remoteUrl,
+                new HashMap<String, String>().getClass());
+        log.info(response.toString());
+        return response;
     }
 }

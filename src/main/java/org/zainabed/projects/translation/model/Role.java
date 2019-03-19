@@ -2,11 +2,7 @@ package org.zainabed.projects.translation.model;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -19,8 +15,11 @@ public class Role {
 	@NotNull
 	private String name;
 
-	@ManyToMany
-	private List<User> users;
+	//@ManyToMany
+	//private List<User> users;
+
+	@OneToMany(mappedBy = "roles",fetch = FetchType.LAZY)
+	private List<UserProjectRole> userProjectRoles;
 
 	public Long getId() {
 		return id;
@@ -38,12 +37,20 @@ public class Role {
 		this.name = name;
 	}
 
-	public List<User> getUsers() {
+	/*public List<User> getUsers() {
 		return users;
 	}
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}*/
+
+	public List<UserProjectRole> getUserProjectRoles() {
+		return userProjectRoles;
+	}
+
+	public void setUserProjectRoles(List<UserProjectRole> userProjectRoles) {
+		this.userProjectRoles = userProjectRoles;
 	}
 
 }

@@ -27,8 +27,8 @@ public class Project extends BaseModel {
 
     private Long extended;
 
-    @ManyToMany
-    private List<User> users;
+    //@ManyToMany
+    //private List<User> users;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -44,6 +44,9 @@ public class Project extends BaseModel {
 
     @OneToMany(mappedBy = "projects",fetch = FetchType.LAZY)
     private List<Translation> translations;
+
+    @OneToMany(mappedBy = "projects",fetch = FetchType.LAZY)
+    private List<UserProjectRole> userProjectRoles;
 
 
     public String getName() {
@@ -70,13 +73,13 @@ public class Project extends BaseModel {
         this.imageUri = imageUri;
     }
 
-    public List<User> getUsers() {
+    /*public List<User> getUsers() {
         return users;
     }
 
     public void setUsers(List<User> users) {
         this.users = users;
-    }
+    }*/
 
     public Set<Locale> getLocales() {
         return locales;
@@ -111,14 +114,11 @@ public class Project extends BaseModel {
         this.extended = extended;
     }
 
-    /*@Override
-    public boolean equals(Object p) {
-        boolean result = false;
+    public List<UserProjectRole> getUserProjectRoles() {
+        return userProjectRoles;
+    }
 
-        if (p instanceof Project){
-            Project project = (Project) p;
-            result = project.id.equals(this.id);
-        }
-        return result;
-    }*/
+    public void setUserProjectRoles(List<UserProjectRole> userProjectRoles) {
+        this.userProjectRoles = userProjectRoles;
+    }
 }
