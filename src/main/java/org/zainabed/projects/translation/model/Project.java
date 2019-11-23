@@ -46,7 +46,7 @@ public class Project extends BaseModel {
     private List<Translation> translations;
 
     @OneToMany(mappedBy = "projects",fetch = FetchType.LAZY)
-    private List<UserProjectRole> userProjectRoles;
+    private List<UserProjectRole> access;
 
 
     public String getName() {
@@ -114,11 +114,11 @@ public class Project extends BaseModel {
         this.extended = extended;
     }
 
-    public List<UserProjectRole> getUserProjectRoles() {
-        return userProjectRoles;
+    public List<UserProjectRole> getAccess() {
+        return access;
     }
 
-    public void setUserProjectRoles(List<UserProjectRole> userProjectRoles) {
-        this.userProjectRoles = userProjectRoles;
+    public void setAccess(List<UserProjectRole> userProjectRoles) {
+        this.access = userProjectRoles;
     }
 }

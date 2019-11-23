@@ -55,7 +55,7 @@ INSERT INTO translation_user(id, username, password, email) VALUES
 INSERT INTO role(id,name) VALUES
 (1, 'ROLE_ADMIN'),
 (2, 'ROLE_USER'),
-(3, 'ROLE_SUPPOIRT'),
+(3, 'ROLE_SUPPORT'),
 (4, 'ROLE_TRANSLATOR'),
 (5, 'ROLE_PO');
 

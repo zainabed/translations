@@ -28,12 +28,12 @@ public class User extends BaseModel {
 	@ManyToMany
 	private List<Project> projects;
 
-	/*@ManyToMany
+	@ManyToMany
 	@JoinTable(
 			name = "user_roles", 
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id") , 
 			inverseJoinColumns  = @JoinColumn(name = "role_id", referencedColumnName = "id") )
-	private List<Role> roles;*/
+	private List<Role> roles;
 
 	@OneToMany(mappedBy = "users",fetch = FetchType.LAZY)
 	private List<UserProjectRole> userProjectRoles;
