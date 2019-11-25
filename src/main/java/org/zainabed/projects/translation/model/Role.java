@@ -19,7 +19,7 @@ public class Role {
 	//private List<User> users;
 
 	@OneToMany(mappedBy = "roles",fetch = FetchType.LAZY)
-	private List<UserProjectRole> userProjectRoles;
+	private List<UserProjectRole> access;
 
 	public Long getId() {
 		return id;
@@ -45,12 +45,11 @@ public class Role {
 		this.users = users;
 	}*/
 
-	public List<UserProjectRole> getUserProjectRoles() {
-		return userProjectRoles;
+	public List<UserProjectRole> getAccess() {
+		return access;
 	}
 
-	public void setUserProjectRoles(List<UserProjectRole> userProjectRoles) {
-		this.userProjectRoles = userProjectRoles;
+	public void setAccess(List<UserProjectRole> userProjectRoles) {
+		this.access = userProjectRoles;
 	}
-
 }

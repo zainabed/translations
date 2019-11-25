@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name = "user_project_role")
 public class UserProjectRole extends BaseModel {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roles_id")
     private Role roles;
 

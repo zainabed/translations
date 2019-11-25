@@ -1,11 +1,11 @@
 INSERT INTO translation_project (id, name, description) VALUES
-  (134545, 'Nordea', 'Nordea brand project'),
-  (254545, 'Nordea Corporate', 'Nordea corporate project');
+  (134545, 'Baloise', 'Insurance project'),
+  (254545, 'Tieto', 'Tieto India Pvt');
 
 INSERT INTO translation_locale (id, name, code ) VALUES
-  (22323, 'Swedish', 'sv'),
+  (22323, 'Dutch', 'nl'),
   (54533, 'English', 'en'),
-  (22324, 'Finnish', 'fi'),
+  (22324, 'French', 'fr'),
   (22325, 'Danish', 'da'),
   (22326, 'Norwegian', 'nb');
 
@@ -17,7 +17,7 @@ INSERT INTO project_locales(project_id, locale_id) VALUES
 INSERT INTO translation_key (id, name, description , projects_id) VALUES
   (1, 'app.title', 'Application title' , 134545),
   (2, 'app.lang.en', 'Application language english', 134545),
-  (3, 'app.lang.sv', 'Application language swedish' , 134545),
+  (3, 'app.lang', 'Application language swedish' , 134545),
   (4, 'login.title', 'Login title' , 134545),
   (5, 'login.description', 'Login description' , 134545),
   (6, 'login.ssn.label', 'Login SSN field label' , 134545),
@@ -26,9 +26,9 @@ INSERT INTO translation_key (id, name, description , projects_id) VALUES
   (9, 'login.instruction.option.two', 'Login instruction option two' , 134545);
 
 INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_id) VALUES
-    (1, 'Nordea Brand', 134545, 54533, 1),
+    (1, 'Baloise', 134545, 54533, 1),
     (2, 'English', 134545, 54533, 2),
-    (3, 'Svenska', 134545, 54533, 3),
+    (3, 'Dutch', 134545, 54533, 3),
     (4, 'Login', 134545, 54533, 4),
     (5, 'Log in with your Mobile BankID', 134545, 54533, 5),
     (6, 'User ID', 134545, 54533, 6),
@@ -37,7 +37,7 @@ INSERT INTO translation_translation (id, content, projects_id, locales_id, keys_
     (9, 'If you have access to Nordea Business, you will be forwarded to the service. After login, you can access Internetbanken Företag via a link below Other services.', 134545, 54533, 9),
     (10, 'Nordea Brand', 134545, 22323, 1),
     (11, 'English', 134545, 22323, 2),
-    (12, 'Svenska', 134545, 22323, 3),
+    (12, 'Dutch', 134545, 22323, 3),
     (13, 'Logga in', 134545, 22323, 4),
     (14, 'Logga in med Mobilt BankID', 134545, 22323, 5),
     (15, 'Personnummer', 134545, 22323, 6),
@@ -64,8 +64,9 @@ INSERT INTO user_project_role(id, users_id, projects_id, roles_id) VALUES
 (2, 1, 134545, 2),
 (3, 1, 254545, 2),
 (4, 1, null , 2),
-(5, 1, null, 4),
+(5, 1, null, 1),
 (6, 2, null, 2),
-(7, 5, 134545, 2),
-(8, 5, 134545, 5),
-(9, 5, null, 2);
+(7, 2, 134545, 2),
+(8, 4, 134545, 4),
+(9, 5, 134545, 5),
+(10, 5, null, 2);
