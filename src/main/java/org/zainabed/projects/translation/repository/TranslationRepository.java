@@ -12,7 +12,6 @@ import org.zainabed.projects.translation.model.projection.TranslationView;
 
 import java.util.List;
 
-@PreAuthorize("hasRole('ROLE_USER')")
 @RepositoryRestResource(excerptProjection = TranslationView.class)
 public interface TranslationRepository extends JpaRepository<Translation, Long> {
 

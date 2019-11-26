@@ -17,7 +17,6 @@ import org.zainabed.projects.translation.model.Key;
 import org.zainabed.projects.translation.model.Locale;
 import org.zainabed.projects.translation.model.Project;
 
-@PreAuthorize("hasRole('ROLE_USER')")
 public interface KeyRepository extends JpaRepository<Key, Long> {
 
     @RestResource(path = "name", rel = "keys")

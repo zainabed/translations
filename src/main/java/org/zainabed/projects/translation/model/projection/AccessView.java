@@ -7,14 +7,16 @@ import org.zainabed.projects.translation.model.UserProjectRole;
 public class AccessView {
     private Long id;
     private Long userId;
+    private String username;
     private Long projectId;
     private Long roleId;
 
     private AccessView(UserProjectRole userProjectRole){
-        id = userProjectRole.getId();
-        userId = userProjectRole.getUsers().getId();
-        projectId = userProjectRole.getProjects().getId();
-        roleId = userProjectRole.getRoles().getId();
+        id = userProjectRole.getId() != null ? userProjectRole.getId() : null;
+        userId = userProjectRole.getUsers() != null? userProjectRole.getUsers().getId() : null;
+        projectId = userProjectRole.getProjects() != null ? userProjectRole.getProjects().getId() : null;
+        roleId = userProjectRole.getRoles() != null ? userProjectRole.getRoles().getId() : null;
+        username = userProjectRole.getUsers() != null ? userProjectRole.getUsers().getUsername() : null;
     }
 
     public static AccessView getInstance(UserProjectRole userProjectRole){
@@ -50,5 +52,13 @@ public class AccessView {
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

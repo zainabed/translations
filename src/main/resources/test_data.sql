@@ -8,9 +8,7 @@ INSERT INTO role(id,name) VALUES
 (400, 'ROLE_TRANSLATOR'),
 (500, 'ROLE_PO');
 
-INSERT INTO user_roles(user_id, role_id) VALUES
- (1, 100),
-(1, 200);
+
 
 INSERT INTO translation_project (id, name, description) VALUES
   (1, 'Test Project', 'Test Project Description.'),
@@ -29,3 +27,6 @@ INSERT INTO project_locales(project_id, locale_id) VALUES
 (4,1);
 
 
+INSERT INTO user_project_role(id, users_id, projects_id, roles_id) VALUES
+(1, 1, 1, 100),
+(2, 1, 1, 200);

@@ -12,7 +12,6 @@ import org.zainabed.projects.translation.model.projection.LocaleView;
 
 import java.util.List;
 
-@PreAuthorize("hasRole('ROLE_USER')")
 @RepositoryRestResource(excerptProjection = LocaleView.class)
 public interface LocaleRepository extends JpaRepository<Locale, Long> {
 	
