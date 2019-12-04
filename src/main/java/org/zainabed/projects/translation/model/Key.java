@@ -20,13 +20,13 @@ import javax.validation.constraints.Size;
 public class Key extends BaseModel {
 
     @NotNull
-    @Size(min = 5, max = 100)
-    @Column(length = 100, nullable = false)
+    @Size(min = 1, max = 300)
+    @Column(length = 300, nullable = false)
     private String name;
 
     @NotNull
-    @Size(min = 5, max = 200)
-    @Column(length = 200, nullable = false)
+    @Size(min = 1, max = 500)
+    @Column(length = 500, nullable = false)
     private String description;
 
     private Long extended;

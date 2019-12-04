@@ -29,7 +29,7 @@ public class Translation extends BaseModel {
     private Project projects;
 
     @NotNull
-    @Size(min = 1, max = 2500)
+    @Size(max = 2500)
     private String content;
     private Boolean verified;
     private Long extended;
